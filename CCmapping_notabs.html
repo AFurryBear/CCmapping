@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<!--
+  BrainBrowser: Web-based Neurological Visualization Tools
+  (https://brainbrowser.cbrain.mcgill.ca)
+
+  Copyright (C) 2011
+  The Royal Institution for the Advancement of Learning
+  McGill University
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
+
+  You should have received a copy of the GNU Affero General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+  Author: Tarek Sherif <tsherif@gmail.com> (http://tareksherif.ca/)
+  Author: Nicolas Kassis
+-->
+<head>
+  <title>
+    BrainBrowser Volume Viewer
+  </title>
+  <link type="text/css" href="css/ui-darkness/jquery-ui-1.8.10.custom.css" rel="Stylesheet" />
+  <link type="text/css" href="css/common.css" rel="Stylesheet" />
+  <link type="text/css" href="css/volume-viewer-demo.css" rel="Stylesheet" />
+  <link type="text/css" href="css/surface-viewer-demo.css" rel="Stylesheet" />
+</head>
+<body>
+  <div class="headerNav">
+    <div class="nav">
+    <ul>
+        <li><a href="#"><span>Usage</span></a></li>
+        <li><a href="#"><span>Downloads</span></a></li>
+        <li><a href="#"><span>Reset</span></a></li>
+    </ul>
+    </div>
+  </div>
+
+  <script id="volume-ui-template" type="x-volume-ui-template">
+    <div class="volume-viewer-display" hidden=true>
+    </div>
+    <div class="volume-viewer-controls volume-controls" hidden=true>
+
+      <div class="coords">
+        <div class="control-heading" id="voxel-coordinates-heading-{{VOLID}}">
+          Voxel Coordinates:
+        </div>
+        <div class="voxel-coords" data-volume-id="{{VOLID}}">
+          I:<input id="voxel-i-{{VOLID}}" class="control-inputs">
+          J:<input id="voxel-j-{{VOLID}}" class="control-inputs">
+          K:<input id="voxel-k-{{VOLID}}" class="control-inputs">
+        </div>
+        <div class="control-heading" id="world-coordinates-heading-{{VOLID}}">
+          World Coordinates:
+        </div>
+        <div class="world-coords" data-volume-id="{{VOLID}}">
+          X:<input id="world-x-{{VOLID}}" class="control-inputs">
+          Y:<input id="world-y-{{VOLID}}" class="control-inputs">
+          Z:<input id="world-z-{{VOLID}}" class="control-inputs">
+        </div>
+      </div>
+
+      <div id="intensity-value-div-{{VOLID}}">
+        <span class="control-heading" data-volume-id="{{VOLID}}">
+          Value:
+        </span>
+        <span id="intensity-value-{{VOLID}}" class="intensity-value"></span>
+      </div>
+
+      <div id="color-map-{{VOLID}}">
+        <span class="control-heading" id="color-map-heading-{{VOLID}}">
+          Color Map:
+        </span>
+      </div>
+
+      <div id="color-map-file-{{VOLID}}" class="color-map-file-div" data-volume-id="{{VOLID}}" >
+        <span class="control-heading">Color map file: </span><input type="file" name="color-map-file-{{VOLID}}" class="color-map-file">
+      </div>
+
+      <div class="threshold-div" data-volume-id="{{VOLID}}">
+        <div class="control-heading">
+          Threshold:
+        </div>
+        <div class="thresh-inputs">
+          <input id="min-threshold-{{VOLID}}" class="control-inputs thresh-input-left" value="0"/>
+          <input id="max-threshold-{{VOLID}}" class="control-inputs thresh-input-right" value="255"/>
+        </div>
+        <div class="slider volume-viewer-threshold" id="threshold-slider-{{VOLID}}"></div>
+      </div>
+
+      <div id="time-{{VOLID}}" class="time-div" data-volume-id="{{VOLID}}" style="display:none">
+        <span class="control-heading">Time:</span>
+        <input class="control-inputs" value="0" id="time-val-{{VOLID}}"/>
+        <div class="slider volume-viewer-threshold" id="time-slider-{{VOLID}}"></div>
+        <input type="checkbox" class="button" id="play-{{VOLID}}"><label for="play-{{VOLID}}">Play</label>
+      </div>
+
+      <div class="contrast-div" data-volume-id="{{VOLID}}">
+        <span class="control-heading" id="contrast-heading{{VOLID}}">Contrast (0.0 to 2.0):</span>
+        <input class="control-inputs" value="1.0" id="contrast-val1"/>
+        <div id="contrast-slider" class="slider volume-viewer-contrast"></div>
+      </div>
+
+      <div class="brightness-div" data-volume-id="{{VOLID}}">
+        <span class="control-heading" id="brightness-heading{{VOLID}}">Brightness (-1 to 1):</span>
+        <input class="control-inputs" value="0" id="brightness-val1"/>
+        <div id="brightness-slider" class="slider volume-viewer-brightness"></div>
+      </div>
+
+      <div id="slice-series-{{VOLID}}" class="slice-series-div" data-volume-id="{{VOLID}}">
+        <div class="control-heading" id="slice-series-heading-{{VOLID}}">All slices: </div>
+        <span class="slice-series-button button" data-axis="xspace">Sagittal</span>
+        <span class="slice-series-button button" data-axis="yspace">Coronal</span>
+        <span class="slice-series-button button" data-axis="zspace">Transverse</span>
+      </div>
+
+    </div>
+  </script>
+  <script id="overlay-ui-template" type="x-volume-ui-template">
+    <div class="overlay-viewer-display">
+    </div>
+    <div class="volume-viewer-controls volume-controls" hidden=true>
+
+      <div class="coords">
+        <div class="control-heading" id="voxel-coordinates-heading-{{VOLID}}">
+          Voxel Coordinates:
+        </div>
+        <div class="voxel-coords" data-volume-id="{{VOLID}}">
+          I:<input id="voxel-i-{{VOLID}}" class="control-inputs">
+          J:<input id="voxel-j-{{VOLID}}" class="control-inputs">
+          K:<input id="voxel-k-{{VOLID}}" class="control-inputs">
+        </div>
+        <div class="control-heading" id="world-coordinates-heading-{{VOLID}}">
+          World Coordinates:
+        </div>
+        <div class="world-coords" data-volume-id="{{VOLID}}">
+          X:<input id="world-x-{{VOLID}}" class="control-inputs">
+          Y:<input id="world-y-{{VOLID}}" class="control-inputs">
+          Z:<input id="world-z-{{VOLID}}" class="control-inputs">
+        </div>
+      </div>
+
+      <div id="intensity-value-div-{{VOLID}}">
+        <span class="control-heading" data-volume-id="{{VOLID}}">
+          Value:
+        </span>
+        <span id="intensity-value-{{VOLID}}" class="intensity-value"></span>
+      </div>
+
+      <div class="blend-div" data-volume-id="{{VOLID}}">
+        <span class="control-heading" id="blend-heading{{VOLID}}">Blend (0.0 to 1.0):</span>
+        <input class="control-inputs" value="0.5" id="blend-val"/>
+        <div id="blend-slider" class="slider volume-viewer-blend"></div>
+      </div>
+
+      <div class="contrast-div" data-volume-id="{{VOLID}}">
+        <span class="control-heading" id="contrast-heading{{VOLID}}">Contrast (0.0 to 2.0):</span>
+        <input class="control-inputs" value="1.0" id="contrast-val"/>
+        <div id="contrast-slider" class="slider volume-viewer-contrast"></div>
+      </div>
+
+      <div class="brightness-div" data-volume-id="{{VOLID}}">
+        <span class="control-heading" id="brightness-heading{{VOLID}}">Brightness (-1 to 1):</span>
+        <input class="control-inputs" value="0" id="brightness-val"/>
+        <div id="brightness-slider" class="slider volume-viewer-brightness"></div>
+      </div>
+    </div>
+  </script>
+
+
+    <div class="controls"  id="volume-controls" style="left:8%;width:20%">
+    <ul>
+        <li style="margin:0 1%"><a id="volume-file-nifti1_con" onclick="$('#results_colormap_vol').hide();$('#volume-file-nifti1').show()"><span>Upload</span></a></li>
+        <li style="margin:0 1%"><a id="results_colormap_vol_con" onclick="$('#results_colormap_vol').show();$('#volume-file-nifti1').hide()"><span>Results & Colormap</span></a></li>
+        <li style="margin:0 1%"><a href="#"><span>CC Download</span></a></li>
+
+    </ul>
+    </div>
+
+
+
+  <div id="loading" style="display: none"><img src="img/ajax-loader.gif" /></div>
+
+  <div id="volume-container">
+    <div class="control-panel" id="volume-panel">
+      <div class="combo_box" id="results_colormap_vol">
+        <div id="data-range-box-vol" class="box half_box" style="width: 400px">
+        <div id="data-range-vol"></div>
+        </div>
+        <div id="volResult" class="box half_box">
+            <ul><h4>Voxel Size Selection</h4></ul>
+              <select  id="voxelSizeSelect">
+                <option value="1"> 1*1 voxel</option>
+                <option value="2"> 3*3 voxel</option>
+                <option value="3"> 5*5 voxel</option>
+                <option value="4"> subroi</option>
+              </select>
+              <br /><br />
+            <div id="weightVol" font-size="12px"><label for="weightVol"> <h4>Result Weight Methods</h4>
+            <input type="radio" name="weightVol" value="mask">Mask 
+            <input type="radio" name="weightVol" value="percen" checked="true">Percent </label>
+            </div>
+        </div>
+
+      </div>
+        <div id="volume-file-nifti1" class="box full_box">
+      <form id="volume-file" style="display:inline;">
+          <input class="upload-button" id="fake-file-upload" type="button" value="choose a nifti1-file" style="position:relative; font-size: 15px">
+          <input id=nifti1-file type=file name=nifti1-file hidden="true">
+          <input id=volume-file-nifti1-submit class="upload-button" style="float:right" type="button" value=upload hidden="true">
+      </form>
+      <br /><br />
+      <div id="volume-file-type">
+      <label for="volume-file-type" id="volume-file-select"> <h3>CC ROI Mask Select:</h3>
+          <input type="radio" name="volume-file-type" id="standard" value="Group_result2/" checked="true"><h4 id="mask0_name" style="display: inline"> No Mask</h4></br>
+          <input type="radio" name="volume-file-type" id="mask1" value="" disabled="true"><h4 id="mask1_name" style="display: inline"> Input CC ROI Mask 1</h4> </br>
+          <input type="radio" name="volume-file-type" id="mask2" value="" disabled="true"><h4 id="mask2_name" style="display: inline"> Input CC ROI Mask 2</h4></br>
+          <input type="radio" name="volume-file-type" id="mask3" value="" disabled="true"><h4 id="mask3_name" style="display: inline"> Input CC ROI Mask 3</h4></br>
+      </label>
+      </div>
+    </div>
+    </div>
+    <div id="volume-browser"></div>
+  </div>
+  <div id="surface-container">
+
+    <div class="control-panel" id="surface-panel" style="padding-left: 0%;padding-right: 0%">
+              <div class="controls"  id="surface-controls">
+    <ul>
+        <li><a id="view_model_upload_con" onclick="$('#view_model_upload').show();$('#upload_multi').hide();$('#results_colormap').hide()"><span>Model & Views</span></a></li>
+        <li><a id="upload_multi_con" onclick="$('#view_model_upload').hide();$('#upload_multi').show();$('#results_colormap').hide()"><span>Upload</span></a></li>
+        <li><a id="results_colormap_con" onclick="$('#view_model_upload').hide();$('#upload_multi').hide();$('#results_colormap').show()"><span>Results & Colormap</span></a></li>
+        <li><a href="#"><span>Surface Download</span></a></li>
+    </ul>
+    </div>
+      <div class="combo_box" id="view_model_upload" hidden="true" style="margin-left:10%;margin-right:10%;width:80%">
+        <div id="examples" class="box half_box" style="width:40%">
+          <h4>Models:</h4>
+          <ul>
+              <li><a href="#" class="example" id="pial" data-example-name="pial" style="color: white">pial</a> (32492*2 vertices)</li>
+              <li><a href="#" class="example" id="inflated" data-example-name="inflated" style="color: white">inflated</a> (32492*2 vertices)</li>
+              <li><a href="#" class="example" id="very_inflated" data-example-name="very_inflated" style="color: white">very_inflated</a> (32492*2 vertices)</li>
+          </ul>
+        </div>
+              <!-- <div id="views-panel" class="combo_box" style="margin: 0 13; display: none"> -->
+          <div id="views" class="box half_box" style="margin-left:10%;width:45%">
+            <h4>Views:</h4>
+            <div id="hem_views_1" class="half_box">
+                <input id="hem_medial" class="view_button" type="radio" name="hem_view" value="medial">Medial<br />                  
+                <input id="hem_superior" class="view_button" type="radio" name="hem_view" value="superior">Superior<br />
+                <input id="hem_anterior" class="view_button" type="radio" name="hem_view" value="anterior">Anterior
+            </div>
+            <div id="hem_views_2" class="half_box">
+                <input id="hem_inferior"  class="view_button" type="radio" name="hem_view" value="inferior">Inferior<br />
+                <input id="hem_lateral"   class="view_button" type="radio" name="hem_view" value="lateral" checked="true">Lateral<br />
+                <input id="hem_posterior" class="view_button" type="radio" name="hem_view" value="posterior">Posterior
+            </div>
+            <br />
+            <p>
+                <input type="checkbox" id="blend_box" checked='true'><label for="blend_box">Show border</label>
+                <input type="checkbox" id="axes-controls"><label for="axes-controls">Display axes</label>
+            </p>
+        </div>
+        <div id="views-2" class="box half_box" style="width:40%">
+            <p style="margin:3px 2px">Autorotate:
+              <span id="autorotate-controls" class="buttonset">
+                <input type="checkbox"  id="autorotateX"><label for="autorotateX">X</label>
+                <input type="checkbox"  id="autorotateY"><label for="autorotateY">Y</label>
+                <input type="checkbox"  id="autorotateZ"><label for="autorotateZ">Z</label>
+              </span>
+            </p>
+            <p style="margin:3px 2px">Grid:
+              <span id="grid-controls" class="buttonset">
+                <input type="checkbox"  id="gridX"><label for="gridX">X</label>
+                <input type="checkbox"  id="gridY"><label for="gridY">Y</label>
+                <input type="checkbox"  id="gridZ"><label for="gridZ">Z</label>
+              </span>
+            </p>
+            </br>
+            <p style="margin:3px 2px">
+                <a class="button" id="resetview">Reset View</a>
+                <input type="checkbox" class="button" id="meshmode"><label for="meshmode">Wireframe Mode</label>
+            </p>
+            <p style="margin:3px 2px">
+                <input type="checkbox" class="button" id="threedee"><label for="threedee">3D Glasses!</label>
+                <span id="screenshot" class="button">Surf Screenshot</span>
+            </p>
+        </div>
+      </div>
+      <div class="combo_box" id="upload_multi" style="margin-left:3%;margin-right:3%;width:94%">
+        <div id="surface-file-gifti1" class="box half_box" style="width:45%">
+          <span id="surface_upload" style="display:inline;">
+          <form id=surface-file style="display:inline;">
+              <input class="upload-button" id="fake-gifti-upload" name="uploadbutton" type="button" value="choose a gifti1-file" style="position:relative; font-size: 12px">
+              <input id=gifti1-file type=file name=gifti1-file hidden="true">
+              <input id=surface-file-gifti1-submit class="upload-button" style="float:right" type="button" value=upload hidden="true">
+          </form>
+              <select id="SurfacetypeSelect" style="position:absolute;left:28%;">
+                  <option value="Blank">Select Mask Type</option>
+                  <option value="Left">Left Brain</option>
+                  <option value="Right">Right Brain</option>
+                  <option value="Whole">Whole Brain</option>
+              </select>
+          </span>
+          <div id="surface-file-type">
+          <label for="surface-file-type" id="surface-file-select"> <h4>Surface ROI Mask Select:</h4>
+              <input type="radio" name="surface-file-type" id="sstandard" value="Group_result2/" checked="true"><p id="mask0_sname" style="display: inline"> No Mask</p></br>
+              <input type="radio" name="surface-file-type" id="smask1" value="" disabled="true"><p id="smask1_name" style="display: inline"> Input Surface ROI Mask 1</p> </br>
+              <input type="radio" name="surface-file-type" id="smask2" value="" disabled="true"><p id="smask2_name" style="display: inline"> Input Surface ROI Mask 2</p></br>
+              <input type="radio" name="surface-file-type" id="smask3" value="" disabled="true"><p id="smask3_name" style="display: inline"> Input Surface ROI Mask 3</p></br>
+          </label>
+          </div>
+        </div>
+      
+
+<!--             <h4 hidden=true>Background Color:</h4>
+            <select id="clear_color" hidden=true>
+                <option value="rgba(1,1,1,0)">Alpha</option>
+                <option value="0x888888">Gray</option>
+                <option value="0x000000">Black</option>
+                <option value="0xffffff">White</option>
+            </select> -->
+        <div id="multi-parcels" class="box half_box">
+          <table id="ParcelSelect_Table" style="width:70%;top:0%">
+              <tbody id="parcelSelection">
+              <tr><td>PARCEL ID</td><td>PARCEL NAME</td></tr>
+              </tbody>
+          </table>
+          </br>
+          <div style="position:absolute;left:87%;top:5%"><a class="button" id="submit-multiparcel">Upload</a></div>
+        </div>
+      </div>
+      <div class="combo_box" id="results_colormap">
+        <div id="data-range-box" class="box half_box" style="width: 400px">
+          <div id="data-range"></div>
+        </div>
+        <div id="shape-cell" class="box half_box">
+          <div id="parcellations">
+            <h4>Parcellations</h4>
+              <label for="parcelSelect">
+                <input type="radio" name="parcelSelect" value="HCPMMP" checked="true">HCPMMP 
+                <input type="radio" name="parcelSelect" value="BN_Atlas">BN_Atlas
+              </label>
+              <br /><br />
+            <label for="template"> <h4>Result Templates</h4>
+              <input type="radio" name="template" value="HCPMMP">HCPMMP  
+              <input type="radio" name="template" value="BN_Atlas">BN_Atlas
+              <input type="radio" name="template" value="vertice" checked="true">Vertice
+            </label>
+          </div>
+
+        </div>
+        <div id="shapes" class="box half_box">
+          <div id="resultType">
+
+            <label for="homoSelect"> <h4>Result Fibers from</h4>  
+              <input type="radio" name="homoSelect" value="homo" checked="true">Homo_regions 
+              <input type="radio" name="homoSelect" value="noho">All_regions
+            </label>
+            <br/><br/>
+            <div id ="weight">
+            <label for="weightSelect"><h4>Result Weight  </h4>
+              <input type="radio" name="weightSelect" value="mask">Mask 
+              <input type="radio" name="weightSelect" value="percen" checked="true">Percent 
+            </label></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="surface-browser">
+    <div class="tag" id="pick-info" hidden=true style="z-index:100;position: absolute;top:10px;" >
+      <div style="z-index:100;position: absolute;top: 10px;">Vertex Information</br>
+        <span style="color:white;font-size: 10px;padding: 5px">vertex-index:</span>
+        <span id="pick-index" style="color:white;font-size: 10px;font-weight: bold"></span>
+        </br>
+        <span style="color:white;font-size: 10px;padding: 5px">vertex-value:</span>
+        <span id="pick-color"></span><span id="pick-value" style="color:white;font-size: 10px;font-weight: bold"></span>
+        </br>
+        <span style="color:white;font-size: 10px;padding: 5px">label:</span>
+        <span id="pick-label" style="color:white;font-size: 10px;font-weight: bold"></span>
+      </div>
+    </div></div>
+  </div>
+  <div id="controls" hidden=true>
+    <div id="controls-content">
+        <div id="usage" class="box full_box">
+            <h4>Usage</h4><br>
+            <div id="usage-notes">
+                <strong>Double click:</strong> <br>select a parcel and show the chosen homo-pair on surface.<br>
+                <strong>Shift double click:</strong> <br>select a parcel <strong>without</strong> showing the chosen homo-pair on surface.<br>
+                <strong>Shift+Ctrl click:</strong> <br>select <strong>multi</strong> parcels showing the chosen homo-pair on surface.<br>
+                <strong>Ctrl click:</strong> <br>shortcut for reset view.<br>
+            </div>
+        </div>
+<!--         <div id="examples" class="box full_box" hidden=true>
+            <h3>Model Surface</h3>
+            <ul>
+                <li><a href="#" class="example" id="pial" data-example-name="pial" style="color: white">pial</a> (32492*2 vertices)</li>
+                <li><a href="#" class="example" id="inflated" data-example-name="inflated" style="color: white">inflated</a> (32492*2 vertices)</li>
+                <li><a href="#" class="example" id="very_inflated" data-example-name="very_inflated" style="color: white">very_inflated</a> (32492*2 vertices)</li>
+            </ul>
+        </div> -->
+<!--         <div id="multi-parcels" class="box full_box" hidden="true">
+            <table id="ParcelSelect_Table">
+                <tbody id="parcelSelection">
+                <tr><td>PARCEL ID</td><td>PARCEL NAME</td></tr>
+                </tbody>
+            </table>
+            </br>
+            <div>
+                <a class="button" id="submit-multiparcel" style="left:80%;right:0%">Upload</a></div>
+        </div> -->
+        <div id="surfResult"></div>
+<!--         <div id="data-range-box" class="box full_box">
+            <h3>Surface Colormap</h3>
+            <div id="data-range">
+            </div>
+            <div id="blend-box"></div>
+        </div> -->
+
+<!--         <div id="surface-file-gifti1" class="box full_box">
+            <span id="surface_upload" style="display:inline;">
+            <form id=surface-file style="display:inline;">
+                <input class="upload-button" id="fake-gifti-upload" name="uploadbutton" type="button" value="choose a gifti1-file" style="right:0%">
+                <input id=gifti1-file type=file name=gifti1-file hidden="true">
+                <input id=surface-file-gifti1-submit class="upload-button" style="float:right" type="button" value=upload hidden="true">
+            </form>
+
+                <select id="SurfacetypeSelect" style="position: relative;left: 35%;">
+                    <option value="Blank">Select Mask Type</option>
+                    <option value="Left">Left Brain</option>
+                    <option value="Right">Right Brain</option>
+                    <option value="Whole">Whole Brain</option>
+                </select>
+            </span>
+            <div id="surface-file-type"></div>
+            <label for="surface-file-type" id="surface-file-select"> <h3>Surface ROI Mask Select:</h3>
+                <input type="radio" name="surface-file-type" id="sstandard" value="Group_result2/" checked="true"><h4 id="mask0_sname" style="display: inline"> No Mask</h4></br>
+                <input type="radio" name="surface-file-type" id="smask1" value="" disabled="true"><h4 id="smask1_name" style="display: inline"> Input Surface ROI Mask 1</h4> </br>
+                <input type="radio" name="surface-file-type" id="smask2" value="" disabled="true"><h4 id="smask2_name" style="display: inline"> Input Surface ROI Mask 2</h4></br>
+                <input type="radio" name="surface-file-type" id="smask3" value="" disabled="true"><h4 id="smask3_name" style="display: inline"> Input Surface ROI Mask 3</h4></br>
+            </label>
+        </div> -->
+
+<!--         <div class="combo_box">
+            <div id="views" class="box half_box" >
+                <h4>Views:</h4>
+                <div id="hem_views_1" class="half_box">
+                    <input id="hem_medial" class="view_button" type="radio" name="hem_view" value="medial">Medial<br />                  
+                    <input id="hem_superior" class="view_button" type="radio" name="hem_view" value="superior">Superior<br />
+                    <input id="hem_anterior" class="view_button" type="radio" name="hem_view" value="anterior">Anterior
+                </div>
+                <div id="hem_views_2" class="half_box">
+                    <input id="hem_inferior"  class="view_button" type="radio" name="hem_view" value="inferior">Inferior<br />
+                    <input id="hem_lateral"   class="view_button" type="radio" name="hem_view" value="lateral" checked="true">Lateral<br />
+                    <input id="hem_posterior" class="view_button" type="radio" name="hem_view" value="posterior">Posterior
+                </div>
+                <p>
+                    Autorotate:
+                    <span id="autorotate-controls" class="buttonset">
+              <input type="checkbox"  id="autorotateX"><label for="autorotateX">X</label>
+              <input type="checkbox"  id="autorotateY"><label for="autorotateY">Y</label>
+              <input type="checkbox"  id="autorotateZ"><label for="autorotateZ">Z</label>
+            </span>
+                </p>
+                <p>
+                    Grid:
+                    <span id="grid-controls" class="buttonset">
+              <input type="checkbox"  id="gridX"><label for="gridX">X</label>
+              <input type="checkbox"  id="gridY"><label for="gridY">Y</label>
+              <input type="checkbox"  id="gridZ"><label for="gridZ">Z</label>
+            </span>
+                </p>
+                <p><input type="checkbox" id="blend_box" checked='true'><label for="blend_box">Show border</label>
+                    <input type="checkbox" id="axes-controls"><label for="axes-controls">Display axes</label>
+                </p>
+                <p>
+                    <a class="button" id="resetview">Reset View</a>
+                    <input type="checkbox" class="button" id="meshmode"><label for="meshmode">Wireframe Mode</label>
+                </p>
+                <p>
+                    <input type="checkbox" class="button" id="threedee"><label for="threedee">3D Glasses!</label>
+                    <span id="screenshot" class="button">Surf Screenshot!</span>
+                </p>
+                <h4>Background Color:</h4>
+                <select id="clear_color">
+                    <option value="rgba(1,1,1,0)">Alpha</option>
+                    <option value="0x888888">Gray</option>
+                    <option value="0x000000">Black</option>
+                    <option value="0xffffff">White</option>
+                </select>
+            </div> -->
+<!--             <div id="shape-cell" class="box half_box" hidden="true">
+                <div id="parcellations">
+                    <h3>Parcellations: </h3>
+                    <label for="parcelSelect">
+                        <input type="radio" name="parcelSelect" value="HCPMMP" checked="true">HCPMMP
+                        <BR>
+                        <input type="radio" name="parcelSelect" value="BN_Atlas">BN_Atlas
+                    </label>
+                </div>
+                <div id="shapes" hidden="true">
+                </div>
+            </div> -->
+        </div>
+    </div>
+  </div>
+  <!-- <input type="checkbox" class="button" id="play-{{VOLID}}"><label for="play-{{VOLID}}">Play</label> -->
+  <input type="button" id="trackInfo-button" value="trackInfo" disabled="true"></input>
+  <div id="trackInfo-container">
+    <div id="controls-content">
+        <div id="information-box" style="width:400px;height:400px"></div>
+        <div id="metainfo-box" style="width:380px;height:400px"></div>
+      </div>
+  </div>
+
+
+  <script src="js/jquery-1.6.4.min.js"></script>
+  <script src="js/jquery-ui-1.8.10.custom.min.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/pako.js"></script>
+  <script src="js/echarts/echarts.js"></script>
+  <script src="js/echarts/extension/dataTool.js"></script>
+  <script src="js/brainbrowser/info-viewer.js"></script>
+  <script src="js/brainbrowser/brainbrowser.js"></script>
+  <script src="js/brainbrowser/core/tree-store.js"></script>
+  <script src="js/brainbrowser/lib/config.js"></script>
+  <script src="js/brainbrowser/lib/utils.js"></script>
+  <script src="js/brainbrowser/lib/events.js"></script>
+  <script src="js/brainbrowser/lib/loader.js"></script>
+  <script src="js/brainbrowser/lib/color-map.js"></script>
+  <script src="js/brainbrowser/lib/color-map-volume.js"></script>
+  <script src="js/brainbrowser/volume-viewer.js"></script>
+  <script src="js/brainbrowser/volume-viewer/lib/display.js"></script>
+  <script src="js/brainbrowser/volume-viewer/lib/panel.js"></script>
+  <script src="js/brainbrowser/volume-viewer/lib/utils.js"></script>
+  <script src="js/brainbrowser/volume-viewer/modules/loading.js"></script>
+  <script src="js/brainbrowser/volume-viewer/modules/rendering.js"></script>
+  <script src="js/brainbrowser/volume-viewer/volume-loaders/overlay.js"></script>
+  <script src="js/brainbrowser/volume-viewer/volume-loaders/minc.js"></script>
+  <script src="js/brainbrowser/volume-viewer/volume-loaders/nifti1.js"></script>
+  <script src="js/brainbrowser/volume-viewer/volume-loaders/mgh.js"></script>
+  <script src="js/brainbrowser/volume-viewer/volume-loaders/hdf5.js"></script>
+  <script src="js/brainbrowser/volume-viewer/volume-loaders/netcdf.js"></script>
+  <script src="volume-viewer-demo.js"></script>
+  <script src="./js/brainbrowser/surface-viewer.js"></script>
+  <script src="./js/brainbrowser/surface-viewer/lib/three.js"></script>
+  <script src="./js/brainbrowser/surface-viewer/lib/parse-intensity-data.js"></script>
+  <script src="./js/brainbrowser/surface-viewer/modules/annotations.js"></script>
+  <script src="./js/brainbrowser/surface-viewer/modules/color.js"></script>
+  <script src="./js/brainbrowser/surface-viewer/modules/loading.js"></script>
+  <script src="./js/brainbrowser/surface-viewer/modules/rendering.js"></script>
+  <script src="./js/brainbrowser/surface-viewer/modules/views.js"></script>
+  <script src="surface-viewer-demo.config.js"></script>
+  <script src="./js/AnaglyphEffect.js"></script>
+  <script src="surface-viewer-demo.js"></script>
+  
+</body>
