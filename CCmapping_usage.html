@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<!--
+  BrainBrowser: Web-based Neurological Visualization Tools
+  (https://brainbrowser.cbrain.mcgill.ca)
+
+  Copyright (C) 2011
+  The Royal Institution for the Advancement of Learning
+  McGill University
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
+
+  You should have received a copy of the GNU Affero General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+  Author: Tarek Sherif <tsherif@gmail.com> (http://tareksherif.ca/)
+-->
+<style>
+    .cc_mapping_text{
+        /*font-size: 200px;*/
+
+        /*color: white;*/
+
+        text-shadow:
+                1px 1px 1px gray,
+                3px 2px 2px black,
+                -1px -0.5px 0.2px white;
+    }
+    .cc_mapping_text:hover{
+
+        text-shadow: 1px 1px 1px white,
+        -1px -0.5px 0.2px black;
+
+    }
+
+</style>
+<head>
+    <link type="text/css" href="css/aboout_page.css" rel="stylesheet">
+    <link type="text/css" href="css/ui-darkness/jquery-ui-1.8.10.custom.css" rel="Stylesheet"/>
+    <link type="text/css" href="css/bootstrap.min.css" rel="stylesheet">
+    <link type="text/css" href="css/main-page.css" rel="stylesheet">
+    <title>CCmapping</title>
+    <!--    relative-->
+    <div class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
+        <div class="container">
+            <a href="CCmapping.html" class="navbar-brand cc_mapping_text" style="font-size: 1.3rem"><strong>CCmapping</strong></a>
+            <!--            <a class="btn btn-primary btn-xl" href="CCmapping.html" style="font-size: 0.5rem">CCmapping</a>-->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                    aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="CCmapping_index.html">Index</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="usage.html">Usage</a>
+                    </li>
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link" href="about.html">About</a>-->
+<!--                    </li>-->
+                </ul>
+            </div>
+        </div>
+    </div>
+</head>
+
+<div class="clearfix"></div>
+<h2 class="title1 text-center" style="width: 100%;margin-top: 30px;margin-top: 100px" >Usage</h2>
+
+<body>
+<div class="block block--white" style="padding-top: 30px">
+    <div class="block__container">
+        <style>
+            #homepage-products-carousel img {
+                max-width: 100%;
+            }
+
+            .sticky-bulb__lightable-item img {
+                width: 100%;
+            }
+
+            @media only screen and (max-width: 991px) {
+                .sticky-bulb__lightable-item img {
+                    margin-top: 32px;
+                }
+
+                #homepage-products-block .title1 {
+                    margin-bottom: 48px;
+                }
+            }
+
+            @media only screen and (min-width: 992px) {
+                #homepage-products-block__moving-element {
+                    margin-top: 48px;
+                    /* Align below the right column's title */
+                }
+            }
+
+            #homepage-products-block__moving-element_c {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                height: 100%;
+            }
+
+            #homepage-products-carousel .carousel-inner .carousel-item {
+                transition: -webkit-transform 0.4s ease;
+                transition: transform 0.4s ease;
+                transition: transform 0.4s ease, -webkit-transform 0.4s ease;
+            }
+
+            #homepage-products-block__sticky-element a {
+                transition: color 0.25s;
+                font-weight: 600;
+                text-decoration: underline;
+            }
+
+            #homepage-products-block__sticky-element a:hover {
+                color: #161616 /* $black-3 */
+            }
+        </style>
+
+        <div id="homepage-products-block" class="row">
+            <div id="homepage-products-block__moving-element" class="col-lg-5 sticky-bulb__moving-element d-md-none d-lg-block"
+                 style="width: 40%">
+                <div id="homepage-products-block__moving-element_c">
+                    <div id="homepage-products-carousel" class="carousel slide">
+                        <div class=" carousel-inner">
+                            <div class="carousel-item active" data-menu-idx="1">
+                                <img class="d-none d-lg-block" src="img/left1.png" alt="First slide">
+                            </div>
+                            <div class="carousel-item" data-menu-idx="2">
+                                <img class="d-none d-lg-block" src="img/right1.png" alt="Second slide">
+                            </div>
+                            <div class="carousel-item" data-menu-idx="3">
+                                <img class="d-none d-lg-block" src="img/up1.png" alt="Third slide">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-1 d-md-none d-lg-block"></div>
+            <div id="homepage-products-block__sticky-element" class="col-lg-6 col-md-12 sticky-bulb__sticky-element">
+
+                <div class="sticky-bulb__lightable-item sticky-bulb__lightable-item--active" data-menu-idx="1" style="margin-top: 20px">
+                    <div class="title3">The Left Side</div>
+                    <div>The left side of the interface, i.e., the mCC panel, supports 1) voxel or subdivision selection on the mCC while viewing cortical topographic maps, and 2) visualization of mCC topographic maps after selecting a specific cortical region within the cortical surface panel on the right side.</div>
+                    <img class="d-lg-none" src="img/left.png">
+                </div>
+                <div class="sticky-bulb__lightable-item" data-menu-idx="2">
+                    <div class="title3">The Right Side</div>
+                    <div>The right side of the interface, i.e., the cortical surface panel, supports 1) region selection on the cortical surface while viewing mCC topographic maps, and 2) visualization of cortical topographic maps after selecting a specific mCC voxel or subdivision within the mCC panel on the left side.</div>
+                    <img class="d-lg-none" src="img/right.png">
+                </div>
+                <div class="sticky-bulb__lightable-item" data-menu-idx="3">
+                    <div class="title3">File-uploading</div>
+                    <div>CCmapping also provides file-uploading services, which enable online estimation and visualization of topographic maps for a customized region of interest (ROI) on the mCC or cortical ROI. The customized- ROI mask file could be uploaded to the upper right-up corner within the mCC or cortical surface panel.</div>
+                    <img class="d-lg-none" src="img/up.png">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--<div style="width: 100%; height:40px; line-height:40px;background-image:url(img/bottom_pic.jpg);text-align: center;">-->
+<!--    <div style="color: #ffffff;font-size: 15px" >Copyright 20xx </a> </div>-->
+<!--</div>-->
+
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
+<!-- SimpleLightbox plugin JS-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.js"></script>
+<!--tong>2-->
+<script src="js/jquery-1.6.4.min.js" async="async"></script>
+<script src="js/jquery-ui-1.8.10.custom.min.js"></script>
+<script src="./js/bootstrap.min.js"></script>
+<script src="js/about_page.js" async="async"></script>
+<script>
+    function defer(method) {
+        if (window.jQuery) {
+            method();
+        } else {
+            setTimeout(function () {
+                defer(method)
+            }, 50);
+        }
+    }
+
+    defer(function () {
+        var menuContainer = $("#homepage-products-block__sticky-element");
+        var menuContainer_items = menuContainer.find(".sticky-bulb__lightable-item");
+        var carouselElem = $('#homepage-products-carousel');
+
+        carouselElem.carousel()
+        carouselElem.carousel('pause');
+        carouselElem.on('slide.bs.carousel', function (e) {
+            var idx = $(e.relatedTarget).attr('data-menu-idx');
+            menuContainer_items.removeClass("sticky-bulb__lightable-item--active");
+            menuContainer_items.filter('[data-menu-idx=' + idx + ']').addClass("sticky-bulb__lightable-item--active");
+        });
+
+        menuContainer_items.click(function () {
+            var clickedItem = $(this);
+            var idx = Number(clickedItem.attr('data-menu-idx'));
+            carouselElem.carousel(idx - 1);
+            carouselElem.carousel('pause');
+        });
+    })
+</script>
+
+</body>

@@ -23,113 +23,497 @@
 
   Author: Tarek Sherif <tsherif@gmail.com> (http://tareksherif.ca/)
 -->
-<head>
-  <link type="text/css" href="css/ui-darkness/jquery-ui-1.8.10.custom.css" rel="Stylesheet" />
-  <link type="text/css" href="css/bootstrap.min.css" rel="stylesheet">
-  <link type="text/css" href="css/main-page.css" rel="stylesheet">
-  <title>BrainBrowser Examples</title>
-  <div class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
-    <div class="container">
-      <a href="#" class="navbar-brand"><strong>CCmapping</strong></a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-        aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" href="CCmapping_index.html">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="CCmapping_index.html">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="usage.html">Usage</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</head>
+<style>
+    .cc_mapping_text{
+        /*font-size: 200px;*/
 
-<body>
-  <!-- Masthead-->
-  <!-- <header class="masthead">
-    <div class="container px-4 px-lg-5 h-100">
-        <div class="row gx-4 gx-lg-5 h-100 align-items-center justify-content-center text-center">
-            <div class="col-lg-8 align-self-end">
-                <h1 class="text-white font-weight-bold">CC Mapping</h1>
-                <hr class="divider" />
-            </div>
-            <div class="col-lg-8 align-self-baseline">
-                <p class="text-white-75 mb-5">An populational-based online interactive atlas of human brain callosal connectivity</p>
-                <a class="btn btn-primary btn-xl" href="CCmapping.html">Click to start!</a>
+        /*color: white;*/
+
+        text-shadow:
+                1px 1px 1px gray,
+                3px 2px 2px black,
+                -1px -0.5px 0.2px white;
+    }
+    .cc_mapping_text:hover{
+        text-shadow: 1px 1px 1px white,
+        -1px -0.5px 0.2px black;
+    }
+
+</style>
+<head>
+    <link rel="icon" type="image/png" sizes="16x16" href="img/ccmapping-01.png">
+    <link type="text/css" href="css/ui-darkness/jquery-ui-1.8.10.custom.css" rel="Stylesheet"/>
+    <link type="text/css" href="css/aboout_page.css" rel="stylesheet">
+    <link type="text/css" href="css/bootstrap.min.css" rel="stylesheet">
+    <link type="text/css" href="css/main-page.css" rel="stylesheet">
+    <title>CCmapping</title>
+    <!--    relative-->
+    <div class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
+        <div class="container">
+            <a href="CCmapping.html" class="navbar-brand cc_mapping_text" style="font-size: 1.3rem"><strong>CCmapping</strong></a>
+            <!--            <a class="btn btn-primary btn-xl" href="CCmapping.html" style="font-size: 0.5rem">CCmapping</a>-->
+            <!--            <a class="btn btn-primary btn-xl" href="CCmapping.html" style="font-size: 0.5rem">CCmapping</a>-->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                    aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div style="margin-top:0.13rem" class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+<!--                        <a class="nav-link" href="CCmapping_index.html">Home</a>-->
+                        <a class="nav-link" href="home.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+<!--                        <a class="nav-link" href="CCmapping_usage.html">Usage</a>-->
+                        <a class="nav-link" href="usage.html">Usage</a>
+                    </li>
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link" href="about.html">About</a>-->
+<!--                    </li>-->
+                </ul>
             </div>
         </div>
     </div>
-</header> -->
-  <!-- <h1>BrainBrowser Examples</h1>
-  <ul>
-    <li><a href="CCmapping.html">CCmapping Viewer</a></li>
-  </ul> -->
-  <!-- <div id="map"><script type="text/javascript" src="//rf.revolvermaps.com/0/0/8.js?i=5wsdce229ln&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33" async="async"></script></div> -->
-          <!-- Call to action-->
-          <section class="page-section bg-dark text-white">
-            <div class="container px-4 px-lg-5 text-center">
-                <h2 class="mb-4">Usage</h2>
-                <p>“I hope a few lines will not annoy or embarrass you. I’m writing, Miss Lester, because I’d like you to know that I am not a common thief. I stole your bag, I want you to know, because I fell in love with you the moment I saw you on the bus. I could think of no way to become acquainted with you except by acting rashly—foolishly, to be accurate. But then, one is a fool when one is in love.
-                  <br>“I loved the way your lips were so slightly parted. You represented the answer to everything to me. I haven’t been unhappy since I came to New York four years ago, but neither have I been happy. Rather, I can best describe myself as having been one of the thousands of young men in New York who simply exist.
-                  <br>“I came to New York from Seattle. I was going to become rich and famous and well-dressed and suave. But in four years I’ve learned that I am not going to become rich and famous and well-dressed and suave. I’m a good printer’s assistant, but that’s all I am. One day the printer got sick, and I had to take his place. What a mess I made of things, Miss Lester. No one would take my orders. The typesetters just sort of giggled when I would tell them to get to work. And I don’t blame them. I’m a fool when I give orders. I suppose I’m just one of the millions who was never meant to give orders. But I don’t mind anymore. There’s a twenty-three-year-old kid my boss just hired. He’s only twenty-three, and I am thirty-one and have worked at the same place for four years. But I know that one day he will become head printer, and I will be his assistant. But I don’t mind knowing this anymore.</p>
-  
-                <!-- <a class="btn btn-light btn-xl" href="https://startbootstrap.com/theme/creative/">Download Now!</a> -->
+</head>
+
+<div class="clearfix"></div>
+<h1 class="text-center" style="width: 100%;margin-top: 80px" >How to use CCmapping?</h1>
+<!--<div class="font-weight-bold text-center" style="font-size: 2.2rem;width: 100%;margin-top: 80px">How to use CCmapping?</div>-->
+<br/><br/>
+<body>
+<h2 class="text-center font-weight-bold" style="width: 100%;margin-top: 50px" >Layout of Interface</h2>
+<div class="container">
+    <div class="row">
+        <a class="text-white-75" style="text-decoration: none;align-content: center;padding-left: 10%">
+            <img src="img/usage-0.png" class="text-center" style="width: 90%; height:auto; border-radius: 1%" alt="">
+        </a>
+    </div>
+</div>
+<!--<img style="" src="img/usage-0.png">-->
+<h2 class="text-center font-weight-bold" style="width: 100%;margin-top: 124px" >mCC Panel</h2>
+<div class="block block--white" style="padding-top: 10px;padding-bottom: 70px">
+    <div class="block__container">
+        <style>
+            #homepage-products-carousel img {
+                max-width: 100%;
+            }
+
+            .sticky-bulb__lightable-item img {
+                width: 100%;
+            }
+
+            @media only screen and (max-width: 991px) {
+                .sticky-bulb__lightable-item img {
+                    margin-top: 32px;
+                }
+
+                #homepage-products-block .title1 {
+                    margin-bottom: 48px;
+                }
+            }
+
+            @media only screen and (min-width: 992px) {
+                #homepage-products-block__moving-element {
+                    margin-top: 48px;
+                    /* Align below the right column's title */
+                }
+            }
+
+            #homepage-products-block__moving-element_c {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                height: 100%;
+            }
+
+            #homepage-products-carousel .carousel-inner .carousel-item {
+                transition: -webkit-transform 0.4s ease;
+                transition: transform 0.4s ease;
+                transition: transform 0.4s ease, -webkit-transform 0.4s ease;
+            }
+
+            #homepage-products-block__sticky-element a {
+                transition: color 0.25s;
+                font-weight: 600;
+                text-decoration: underline;
+            }
+
+            #homepage-products-block__sticky-element a:hover {
+                color: #161616 /* $black-3 */
+            }
+        </style>
+
+        <div id="homepage-products-block" class="row">
+            <div id="homepage-products-block__moving-element" class="col-lg-5 sticky-bulb__moving-element d-md-none d-lg-block"
+                 style="width: 40%">
+                <div id="homepage-products-block__moving-element_c">
+                    <div id="homepage-products-carousel" class="carousel slide">
+                        <div class=" carousel-inner">
+                            <div class="carousel-item active" data-menu-idx="1">
+                                <img class="d-none d-lg-block" src="img/mCCpanel-1.png" alt="First slide">
+                            </div>
+                            <div class="carousel-item" data-menu-idx="2">
+                                <img class="d-none d-lg-block" src="img/mCCpanel-2.png" alt="Second slide">
+                            </div>
+                            <div class="carousel-item" data-menu-idx="3">
+                                <img class="d-none d-lg-block" src="img/mCCpanel-3.png" alt="Third slide">
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </section>
-        <!-- Contact-->
-        <section class="page-section" id="contact">
-            <div class="container px-4 px-lg-5">
-                <div class="row gx-4 gx-lg-5 justify-content-center">
-                    <div class="col-lg-8 col-xl-6 text-center">
-                        <h2 class="mt-0">Let's Get In Touch!</h2>
-                        <hr class="divider" />
-                        <p class="text-muted mb-5">Ready to start your next project with us? Send us a messages and we will get back to you as soon as possible!</p>
+            <div class="col-lg-1 d-md-none d-lg-block"></div>
+            <div id="homepage-products-block__sticky-element" class="col-lg-6 col-md-12 sticky-bulb__sticky-element">
+
+                <div class="sticky-bulb__lightable-item sticky-bulb__lightable-item--active" data-menu-idx="1" style="margin-top: 20px">
+                    <div style="float:left" class="title3">Select mCC region on the different resolution</div>
+                    <div style="margin-top:2px;font-size: 18px;color: #666666">&nbsp;(click)</div>
+                    <br/>
+                    <div>
+                        <ul>
+                            <li>Choose the resolution on the mCC operation panel.</li>
+                            <li>Double-click the voxel/subdivision on mCC.</li>
+                            <li>Check the resultant cortical topographic map on the cortical cortex panel.</li>
+                        </ul>
                     </div>
+
+                    <img class="d-lg-none" src="img/mCCpanel-1.png">
                 </div>
-                <div class="row gx-4 gx-lg-5 justify-content-center mb-5">
-                    <div class="col-lg-6">
-                        <form>
-                            <div class="form-floating mb-3">
-                                <input class="form-control" id="inputName" type="text" placeholder="Enter your name..." />
-                                <label for="inputName">Full name</label>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <input class="form-control" id="inputEmail" type="email" placeholder="name@example.com" />
-                                <label for="inputEmail">Email address</label>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <input class="form-control" id="inputPhone" type="tel" placeholder="(123) 456-7890" />
-                                <label for="inputPhone">Phone number</label>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <textarea class="form-control" id="inputMessage" type="text" placeholder="Enter your message here..." style="height: 10rem"></textarea>
-                                <label for="inputMessage">Message</label>
-                            </div>
-                            <div class="d-grid"><button class="btn btn-primary btn-xl" type="submit">Submit</button></div>
-                        </form>
+                <div class="sticky-bulb__lightable-item" data-menu-idx="2">
+                    <div style="float:left" class="title3">Visualize mCC topographic result</div>
+                    <div style="margin-top:2px;font-size: 18px;color: #666666">&nbsp;(click)</div>
+                    <br/>
+                    <div> <ul><li> Select/upload cortical ROI on the cortical cortex panel.</li>
+                        <li>Check the resultant mCC topographic map.</li>
+                            <li>Choose strength measure you need.</li>
+                            <li>Change color-map on the operation panel.</li>
+                            <li>Zoom in and out the result by scrolling.</li></ul></div>
+                    <img class="d-lg-none" src="img/mCCpanel-2.png">
+                </div>
+                <div class="sticky-bulb__lightable-item" data-menu-idx="3">
+                    <div style="float:left" class="title3">Upload ROI on mCC mask</div>
+                    <div style="margin-top:2px;font-size: 18px;color: #666666">&nbsp;(click)</div>
+                    <br/>
+                    <div> <ul><li>Download mCC mask by clicking the 'CC mask' button.</li>
+                         <li> Make your ROI within the mask (same layer and resolution).</li>
+                        <li> Upload your mask by clicking 'upload' button.</li>
+                         <li> Check the resultant cortical topographic map on the cortical cortex panel. </li></ul></div>
+                    <img class="d-lg-none" src="img/mCCpanel-3.png">
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<h2 class="text-center font-weight-bold" style="width: 100%" >Cortical Cortex Panel</h2>
+<div class="block block--white" style="padding-top: 10px;padding-bottom: 70px">
+    <div class="block__container">
+        <style>
+            #homepage-products-carousel2 img {
+                max-width: 100%;
+            }
+
+            .sticky-bulb__lightable-item img {
+                width: 100%;
+            }
+
+            @media only screen and (max-width: 991px) {
+                .sticky-bulb__lightable-item img {
+                    margin-top: 32px;
+                }
+
+                #homepage-products-block .title1 {
+                    margin-bottom: 48px;
+                }
+            }
+
+            @media only screen and (min-width: 992px) {
+                #homepage-products-block__moving-element {
+                    margin-top: 48px;
+                    /* Align below the right column's title */
+                }
+            }
+
+            #homepage-products-block__moving-element_c2 {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                height: 100%;
+            }
+
+            #homepage-products-carousel2 .carousel-inner .carousel-item {
+                transition: -webkit-transform 0.4s ease;
+                transition: transform 0.4s ease;
+                transition: transform 0.4s ease, -webkit-transform 0.4s ease;
+            }
+
+            #homepage-products-block__sticky-element2 a {
+                transition: color 0.25s;
+                font-weight: 600;
+                text-decoration: underline;
+            }
+
+            #homepage-products-block__sticky-element2 a:hover {
+                color: #161616 /* $black-3 */
+            }
+        </style>
+<div id="homepage-products-block2" class="row">
+    <div id="homepage-products-block__moving-element2" class="col-lg-5 sticky-bulb__moving-element d-md-none d-lg-block"
+         style="width: 40%">
+        <div id="homepage-products-block__moving-element_c2">
+            <div id="homepage-products-carousel2" class="carousel slide">
+                <div class=" carousel-inner">
+                    <div class="carousel-item active" data-menu-idx="1">
+                        <img class="d-none d-lg-block" src="img/cortexpanel-1.png" alt="First slide">
                     </div>
+                    <div class="carousel-item" data-menu-idx="2">
+                        <img class="d-none d-lg-block" src="img/cortexpanel-2.png" alt="Second slide">
+                    </div>
+                    <div class="carousel-item" data-menu-idx="3">
+                        <img class="d-none d-lg-block" src="img/cortexpanel-3.png" alt="Third slide">
+                    </div>
+<!--                    <div class="carousel-item" data-menu-idx="4">-->
+<!--                        <img class="d-none d-lg-block" src="img/up1.png" alt="Fourth slide">-->
+<!--                    </div>-->
                 </div>
-                <div class="row gx-4 gx-lg-5 justify-content-center">
-                    <div class="col-lg-4 text-center mb-5 mb-lg-0">
-                        <i class="bi-phone fs-2 mb-3 text-muted"></i>
-                        <div>+1 (555) 123-4567</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-1 d-md-none d-lg-block"></div>
+    <div id="homepage-products-block__sticky-element2" class="col-lg-6 col-md-12 sticky-bulb__sticky-element">
+
+        <div class="sticky-bulb__lightable-item sticky-bulb__lightable-item--active" data-menu-idx="1" style="padding-right:2px ;margin-top: 20px">
+            <div style="float:left;" class="title3">Select cortical parcels on the different parcellations</div>
+            <div style="margin-top:2px;font-size: 18px;color: #666666">&nbsp;(click)</div>
+            <br/>
+            <div>
+                <ul><li> Choose parcellation on the cortical cortex operation panel.</li>
+                <li> Double-click the a parcel of the pair on cortex.</li>
+                <li> Check the resultant mCC topographic map on the mCC panel.</li></ul>
+            </div>
+            <img class="d-lg-none" src="img/cortexpanel-1.png">
+        </div>
+        <div class="sticky-bulb__lightable-item" data-menu-idx="2">
+            <div style="float:left" class="title3">Visualize cortical topographic result</div>
+            <div style="margin-top:2px;font-size: 18px;color: #666666">&nbsp;(click)</div>
+            <br/>
+
+            <div> <ul><li> Select/upload mCC voxel/ROI on the mCC panel.</li>
+                <li>Check the resultant cortical cortex topographic map.</li>
+                <li>Choose strength measure you need.</li>
+                <li>Choose result resolution. If any parcellation is chosen here, you can also choose results only including fiber connecting homotopic regions.</li>
+                <li> Change color-map on the operation panel.</li>
+                <li> Zoom in and out the result by scrolling. </li></ul></div>
+            <img class="d-lg-none" src="img/cortexpanel-2.png">
+        </div>
+        <div class="sticky-bulb__lightable-item" data-menu-idx="3">
+            <div style="float:left" class="title3">Upload ROI on cortical cortex</div>
+            <div style="margin-top:2px;font-size: 18px;color: #666666">&nbsp;(click)</div>
+            <br/>
+            <div> <ul><li>Choose from left, right, whole brain in menu. A template file will be downloaded automatically.</li>
+                <li>Make your ROI using the downloaded template.</li>
+                <li>Upload your mask file by clicking 'upload' button.</li>
+                <li>Check the resultant mCC topographic map on the mCC panel.</li> </ul>
+            </div>
+            <img class="d-lg-none" src="img/cortexpanel-3.png">
+        </div>
+<!--        <div class="sticky-bulb__lightable-item" data-menu-idx="4">-->
+<!--            <div class="title3">Change View of Surface</div>-->
+<!--            <div> <ul><li>Choose from pial, inflated, very inflated surface as your model.</li>-->
+<!--                <li>Choose view position of surface model.</li>-->
+<!--                <li>Use auto spin or other tool for better visualization.</li></ul>-->
+<!--            </div>-->
+<!--            <img class="d-lg-none" src="img/up.png">-->
+<!--        </div>-->
+    </div>
+</div>
+    </div>
+</div>
+<h2 class="text-center font-weight-bold" style="width: 100%;" >View and Info Tools</h2>
+<div class="block block--white" style="padding-top: 10px;margin-top: 20px">
+    <div class="block__container">
+        <style>
+            #homepage-products-carousel3 img {
+                max-width: 100%;
+            }
+
+            .sticky-bulb__lightable-item img {
+                width: 100%;
+            }
+
+            @media only screen and (max-width: 991px) {
+                .sticky-bulb__lightable-item img {
+                    margin-top: 32px;
+                }
+
+                #homepage-products-block .title1 {
+                    margin-bottom: 48px;
+                }
+            }
+
+            @media only screen and (min-width: 992px) {
+                #homepage-products-block__moving-element {
+                    margin-top: 48px;
+                    /* Align below the right column's title */
+                }
+            }
+
+            #homepage-products-block__moving-element_c3 {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                height: 100%;
+            }
+
+            #homepage-products-carousel3 .carousel-inner .carousel-item {
+                transition: -webkit-transform 0.4s ease;
+                transition: transform 0.4s ease;
+                transition: transform 0.4s ease, -webkit-transform 0.4s ease;
+            }
+
+            #homepage-products-block__sticky-element3 a {
+                transition: color 0.25s;
+                font-weight: 600;
+                text-decoration: underline;
+            }
+
+            #homepage-products-block__sticky-element3 a:hover {
+                color: #161616 /* $black-3 */
+            }
+        </style>
+
+
+    <div id="homepage-products-block3" class="row">
+        <div id="homepage-products-block__moving-element3" class="col-lg-5 sticky-bulb__moving-element d-md-none d-lg-block"
+             style="width: 40%">
+            <div id="homepage-products-block__moving-element_c3">
+                <div id="homepage-products-carousel3" class="carousel slide">
+                    <div class=" carousel-inner">
+                        <div class="carousel-item active" data-menu-idx="1">
+                            <img class="d-none d-lg-block" src="img/surfaceview.png" alt="First slide">
+                        </div>
+                        <div class="carousel-item" data-menu-idx="2">
+                            <img class="d-none d-lg-block" src="img/trackinfo.png" alt="Second slide">
+                        </div>
+
                     </div>
                 </div>
             </div>
-        </section>
-          <!-- Bootstrap core JS-->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
-          <!-- SimpleLightbox plugin JS-->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.js"></script>  
-  <script src="js/jquery-1.6.4.min.js"></script>
-  <script src="js/jquery-ui-1.8.10.custom.min.js"></script>
-  <script src="./js/bootstrap.min.js"></script>
+        </div>
+        <div class="col-lg-1 d-md-none d-lg-block"></div>
+        <div id="homepage-products-block__sticky-element3" class="col-lg-6 col-md-12 sticky-bulb__sticky-element">
+
+            <div class="sticky-bulb__lightable-item sticky-bulb__lightable-item--active" data-menu-idx="1">
+                <div style="float:left" class="title3">Change view of surface</div>
+                <div style="margin-top:2px;font-size: 18px;color: #666666">&nbsp;(click)</div>
+                <br/>
+                <div> <ul><li>Choose from pial, inflated, very inflated surface as your model.</li>
+                    <li>Choose view position of surface model. </li>
+                    <li>Use auto spin, wireframe or other tool for visualization.</li></ul>
+                </div>
+                <img class="d-lg-none" src="img/surfaceview.png">
+            </div>
+            <div class="sticky-bulb__lightable-item" data-menu-idx="2">
+                <div style="float:left" class="title3">Check track information</div>
+                <div style="margin-top:2px;font-size: 18px;color: #666666">&nbsp;(click)</div>
+                <br/>
+
+                <div> <ul>
+                    <li>Click trackinfo button (right bottom) to check track information. </li>
+                    <li> Distance and number information of tracks are provided. </li>
+                    <li>If parcel pair selected, cognitive information from neurosynth is provided. </li></ul></div>
+                <img class="d-lg-none" src="img/trackinfo.png">
+            </div>
+
+        </div>
+    </div>
+</div>
+</div>
+<div style="width: 100%; height:40px; line-height:40px;text-align: center;">
+<div style="color: #ffffff;font-size: 15px" > <a style="color: black;text-decoration: none;" href="https://beian.miit.gov.cn" target="_blank">京ICP备2022027253号</a></div>
+</div>
+
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
+<!-- SimpleLightbox plugin JS-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.js"></script>
+<!--tong>2-->
+<script src="js/jquery-1.6.4.min.js"></script>
+<script src="js/jquery-ui-1.8.10.custom.min.js"></script>
+<script src="js/about_page.js"></script>
+<script src="./js/bootstrap.min.js"></script>
+<script>
+    function defer(method) {
+        if (window.jQuery) {
+            method();
+        } else {
+            setTimeout(function () {
+                defer(method)
+            }, 50);
+        }
+    }
+
+    defer(function () {
+        var menuContainer = $("#homepage-products-block__sticky-element");
+        var menuContainer_items = menuContainer.find(".sticky-bulb__lightable-item");
+        var carouselElem = $('#homepage-products-carousel');
+
+        carouselElem.carousel()
+        carouselElem.carousel('pause');
+        carouselElem.on('slide.bs.carousel', function (e) {
+            var idx = $(e.relatedTarget).attr('data-menu-idx');
+            menuContainer_items.removeClass("sticky-bulb__lightable-item--active");
+            menuContainer_items.filter('[data-menu-idx=' + idx + ']').addClass("sticky-bulb__lightable-item--active");
+        });
+
+        menuContainer_items.click(function () {
+            var clickedItem = $(this);
+            var idx = Number(clickedItem.attr('data-menu-idx'));
+            carouselElem.carousel(idx - 1);
+            carouselElem.carousel('pause');
+        });
+    })
+
+    defer(function () {
+        var menuContainer = $("#homepage-products-block__sticky-element2");
+        var menuContainer_items = menuContainer.find(".sticky-bulb__lightable-item");
+        var carouselElem = $('#homepage-products-carousel2');
+
+        carouselElem.carousel()
+        carouselElem.carousel('pause');
+        carouselElem.on('slide.bs.carousel', function (e) {
+            var idx = $(e.relatedTarget).attr('data-menu-idx');
+            menuContainer_items.removeClass("sticky-bulb__lightable-item--active");
+            menuContainer_items.filter('[data-menu-idx=' + idx + ']').addClass("sticky-bulb__lightable-item--active");
+        });
+
+        menuContainer_items.click(function () {
+            var clickedItem = $(this);
+            var idx = Number(clickedItem.attr('data-menu-idx'));
+            carouselElem.carousel(idx - 1);
+            carouselElem.carousel('pause');
+        });
+    })
+    defer(function () {
+        var menuContainer = $("#homepage-products-block__sticky-element3");
+        var menuContainer_items = menuContainer.find(".sticky-bulb__lightable-item");
+        var carouselElem = $('#homepage-products-carousel3');
+
+        carouselElem.carousel()
+        carouselElem.carousel('pause');
+        carouselElem.on('slide.bs.carousel', function (e) {
+            var idx = $(e.relatedTarget).attr('data-menu-idx');
+            menuContainer_items.removeClass("sticky-bulb__lightable-item--active");
+            menuContainer_items.filter('[data-menu-idx=' + idx + ']').addClass("sticky-bulb__lightable-item--active");
+        });
+
+        menuContainer_items.click(function () {
+            var clickedItem = $(this);
+            var idx = Number(clickedItem.attr('data-menu-idx'));
+            carouselElem.carousel(idx - 1);
+            carouselElem.carousel('pause');
+        });
+    })
+</script>
+
 </body>

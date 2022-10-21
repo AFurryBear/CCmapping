@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<!--
+  BrainBrowser: Web-based Neurological Visualization Tools
+  (https://brainbrowser.cbrain.mcgill.ca)
+
+  Copyright (C) 2011
+  The Royal Institution for the Advancement of Learning
+  McGill University
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
+
+  You should have received a copy of the GNU Affero General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+  Author: Tarek Sherif <tsherif@gmail.com> (http://tareksherif.ca/)
+-->
+
+<style>
+    /*.Line1{*/
+    /*    width: 120px;*/
+    /*    height: 2px;*/
+    /*    background:linear-gradient(90deg, rgba(0,0,0,0) 0%,rgba(0,0,0,1) 90%);*/
+    /*}*/
+
+    /*.Line2{*/
+    /*    width: 120px;*/
+    /*    height: 2px;*/
+    /*    float: left;*/
+    /*    background:linear-gradient(90deg,rgba(0,0,0,1) 10%,rgba(0,0,0,0) 100%);*/
+    /*}*/
+
+    .title_inv{
+        text-align: center;
+        position: relative;
+        display: block;
+        font-size: 2.2rem;
+        color: white;
+
+    }
+    .title_inv2{
+        text-align: center;
+        position: relative;
+        display: block;
+        font-size: 2.2rem;
+        color: white;
+
+    }
+    .title_inv3{
+        text-align: center;
+        position: relative;
+        display: block;
+        font-size: 2.2rem;
+        color: white;
+
+    }
+
+    .title_inv:before{
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 33%;
+        height: 5px;
+        /*background:linear-gradient(90deg, rgba(211,215,212,0) 0%,#4c71b9 45%,#f15a22 90%,#ff0000 100%);*/
+        background:linear-gradient(90deg, rgba(211,215,212,0) 50%, #FB8C00 65%,#FFB74D 85%,#FFCA28 100%);
+        left: 0%;
+    }
+    .title_inv:after{
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 33%;
+        height: 5px;
+        /*background:linear-gradient(90deg,#ff0000 0%,#f15a22 10%,#4c71b9 55%, rgba(211,215,212,0) 100%);*/
+        background:linear-gradient(90deg,#FFCA28 0%,#FFB74D 15%,#FB8C00 35%,rgba(211,215,212,0) 50%);
+        right: 0%;
+    }
+    .title_inv2:before{
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 30%;
+        height: 5px;
+        /*background:linear-gradient(90deg, rgba(211,215,212,0) 0%,#4c71b9 45%,#f15a22 90%,#ff0000 100%);*/
+        background:linear-gradient(90deg, rgba(211,215,212,0) 43%, #FB8C00 65%,#FFB74D 85%,#FFCA28 90%);
+        left: 13%;
+        /*margin-left: 8%;*/
+    }
+    .title_inv2:after{
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 30%;
+        height: 5px;
+        /*background:linear-gradient(90deg,#ff0000 0%,#f15a22 10%,#4c71b9 55%, rgba(211,215,212,0) 100%);*/
+        background:linear-gradient(90deg,#FFCA28 10%,#FFB74D 15%,#FB8C00 35%,rgba(211,215,212,0) 57%);
+        right: 13%;
+        /*margin-right: 8%;*/
+    }
+    .title_inv3:before{
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 41%;
+        height: 5px;
+        /*background:linear-gradient(90deg,  rgba(211,215,212,0) 0%,#4c71b9 45%,#ff0000 90%,#ff0000 100%);*/
+        background:linear-gradient(90deg, rgba(211,215,212,0) 50%, #FB8C00 65%,#FFB74D 85%,#FFCA28 100%);
+        left: 0%;
+    }
+    .title_inv3:after{
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 41%;
+        height: 5px;
+        /*background:linear-gradient(90deg,#ff0000 0%,#f15a22 10%,#4c71b9 55%, rgba(211,215,212,0) 100%);*/
+        background:linear-gradient(90deg,#FFCA28 0%,#FFB74D 15%,#FB8C00 35%,rgba(211,215,212,0) 50%);
+        right: 0%;
+    }
+    .cc_mapping_text{
+        /*font-size: 200px;*/
+
+        /*color: white;*/
+
+        text-shadow:
+        1px 1px 1px gray,
+        3px 2px 2px black,
+        -1px -0.5px 0.2px white;
+    }
+    .cc_mapping_text:hover{
+
+        text-shadow: 1px 1px 1px white,
+        -1px -0.5px 0.2px black;
+
+    }
+    .btn_plus{
+        -webkit-box-shadow: 0px 0px 0px 1px #FF9800 inset, 0px 0px 0px 1.5px #FFB74D inset, 0px 1px 0px 0px #355655;
+        /*-moz-box-shadow: 0px 0px 0px 1px #FF9800 inset, 0px 0px 0px 1.5px #FFB74D inset, 0px 1px 0px 0px #355655, 0px 3px 0px 0px rgba(0,0,0,.5);*/
+        /*!*-ie-box-shadow: 0px 0px 0px 1px #FF9800 inset, 0px 0px 0px 1.5px #FFB74D inset, 0px 1px 0px 0px #355655, 0px 3px 0px 0px rgba(0,0,0,.5);*!*/
+        /*box-shadow: 0px 0px 0px 1px #FF9800 inset, 0px 0px 0px 1.5px #FFB74D inset, 0px 1px 0px 0px #355655, 0px 3px 0px 0px rgba(0,0,0,.5);*/
+        /*-webkit-box-shadow: 0px 0px 0px 1px #589391 inset, 0px 0px 0px 2px #65a9a7 inset, 0px 1px 0px 0px #355655, 0px 3px 0px 0px rgba(0,0,0,.5);*/
+        /*-moz-box-shadow: 0px 0px 0px 1px #589391 inset, 0px 0px 0px 2px #65a9a7 inset, 0px 1px 0px 0px #355655, 0px 3px 0px 0px rgba(0,0,0,.5);*/
+        /*-ie-box-shadow: 0px 0px 0px 1px #589391 inset, 0px 0px 0px 2px #65a9a7 inset, 0px 1px 0px 0px #355655, 0px 3px 0px 0px rgba(0,0,0,.5);*/
+        /*box-shadow: 0px 0px 0px 1px #589391 inset, 0px 0px 0px 2px #65a9a7 inset, 0px 1px 0px 0px #355655, 0px 3px 0px 0px rgba(0,0,0,.5);*/
+    }
+    /*.btn_plus{*/
+    /*    -webkit-box-shadow: 0px 0px 0px 1px #589391 inset, 0px 0px 0px 2px #65a9a7 inset, 0px 1px 0px 0px #355655, 0px 3px 0px 0px rgba(0,0,0,.5);*/
+    /*    -moz-box-shadow: 0px 0px 0px 1px #589391 inset, 0px 0px 0px 2px #65a9a7 inset, 0px 1px 0px 0px #355655, 0px 3px 0px 0px rgba(0,0,0,.5);*/
+    /*    -ie-box-shadow: 0px 0px 0px 1px #589391 inset, 0px 0px 0px 2px #65a9a7 inset, 0px 1px 0px 0px #355655, 0px 3px 0px 0px rgba(0,0,0,.5);*/
+    /*    box-shadow: 0px 0px 0px 1px #589391 inset, 0px 0px 0px 2px #65a9a7 inset, 0px 1px 0px 0px #355655, 0px 3px 0px 0px rgba(0,0,0,.5);*/
+    /*    !*-webkit-box-shadow: 0px 0px 0px 1px #404f66 inset, 0px 0px 0px 2px #535b6d inset, 0px 1px 0px 0px #35425b, 0px 3px 0px 0px rgba(0,0,0,.5);*!*/
+    /*    !*-moz-box-shadow: 0px 0px 0px 1px #404f66 inset, 0px 0px 0px 2px #535b6d inset, 0px 1px 0px 0px #35425b, 0px 3px 0px 0px rgba(0,0,0,.5);*!*/
+    /*    !*-ie-box-shadow: 0px 0px 0px 1px #404f66 inset, 0px 0px 0px 2px #535b6d inset, 0px 1px 0px 0px #35425b, 0px 3px 0px 0px rgba(0,0,0,.5);*!*/
+    /*    !*box-shadow: 0px 0px 0px 1px #404f66 inset, 0px 0px 0px 2px #535b6d inset, 0px 1px 0px 0px #35425b, 0px 3px 0px 0px rgba(0,0,0,.5);*!*/
+    /*}*/
+</style>
+
+
+<head>
+    <link rel="icon" type="image/png" sizes="16x16" href="img/ccmapping-01.png">
+    <link type="text/css" href="css/aboout_page.css" rel="stylesheet">
+    <link type="text/css" href="css/ui-darkness/jquery-ui-1.8.10.custom.css" rel="Stylesheet"/>
+    <link type="text/css" href="css/bootstrap.min.css" rel="stylesheet">
+    <link type="text/css" href="css/main-page.css" rel="stylesheet">
+    <title>CCmapping</title>
+    <div class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
+        <div class="container">
+            <a href="CCmapping.html" class="navbar-brand cc_mapping_text" style="display:inline-block;vertical-align:top;font-size: 1.3rem"><strong>CCmapping</strong></a>
+<!--            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"-->
+<!--                    aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">-->
+<!--                <span class="navbar-toggler-icon"></span>-->
+<!--            </button>-->
+<!--            <a class="nav-link" style="line-height: inherit;display:block" href="CCmapping_index.html">Home</a>-->
+            <div style="margin-top:0.13rem;display:inline-block;vertical-align:top;" class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+<!--                        <a class="nav-link" href="CCmapping_index.html">Home</a>-->
+                        <a class="nav-link" href="home.html">Home</a>
+                    </li>
+
+                    <li class="nav-item">
+<!--                        <a class="nav-link" href="CCmapping_usage.html">Usage</a>-->
+                        <a class="nav-link" href="usage.html">Usage</a>
+                    </li>
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link" href="about.html">About</a>-->
+<!--                    </li>-->
+                </ul>
+            </div>
+        </div>
+    </div>
+</head>
+
+<body>
+<!-- Masthead-->
+<header class="masthead" style="background-image: url(img/hero_bg_7.jpg);">
+    <div class="container px-4 px-lg-5 h-100">
+        <div class="row gx-4 gx-lg-5 h-100 align-items-center justify-content-center text-center">
+            <div class="col-lg-8 align-self-end">
+                <a class="text-white-75" href="CCmapping.html" style="text-decoration: none;">
+                    <h1 class="text-white font-weight-bold">CCmapping</h1>
+                </a>
+            </div>
+
+            <div class="col-lg-8 align-self-baseline">
+                <br/><br/>
+<!--                <a class="text-white-75" href="CCmapping.html" style="text-decoration: none;">-->
+                    <p class="text-white-75 mb-5" style="font-size: 1.2rem">An populational-based online interactive atlas of human brain callosal connectivity</p>
+<!--                </a>-->
+                <a class="btn btn-primary btn-xl btn_plus" href="CCmapping.html" style="font-size: 1.3rem">Click to start</a>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- <h1>BrainBrowser Examples</h1>
+<ul>
+  <li><a href="CCmapping.html">CCmapping Viewer</a></li>
+</ul> -->
+<!-- <div id="map"><script type="text/javascript" src="//rf.revolvermaps.com/0/0/8.js?i=5wsdce229ln&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33" async="async"></script></div> -->
+<!-- Call to action-->
+
+<!--原in-->
+<!--<section class="page-section bg-dark text-white" style="background-image: url(img/hero_bg_8.jpg); background-size: cover">-->
+<!--  <div class="container px-4 px-lg-5 text-center">-->
+<!--    <h2>Introduction</h2>-->
+<!--    <p>“I hope a few lines will not annoy or embarrass you. I’m writing, Miss Lester, because I’d like you to know that I am not a common thief. I stole your bag, I want you to know, because I fell in love with you the moment I saw you on the bus. I could think of no way to become acquainted with you except by acting rashly—foolishly, to be accurate. But then, one is a fool when one is in love.-->
+<!--      <br>“I loved the way your lips were so slightly parted. You represented the answer to everything to me. I haven’t been unhappy since I came to New York four years ago, but neither have I been happy. Rather, I can best describe myself as having been one of the thousands of young men in New York who simply exist.-->
+<!--      <br>“I came to New York from Seattle. I was going to become rich and famous and well-dressed and suave. But in four years I’ve learned that I am not going to become rich and famous and well-dressed and suave. I’m a good printer’s assistant, but that’s all I am. One day the printer got sick, and I had to take his place. What a mess I made of things, Miss Lester. No one would take my orders. The typesetters just sort of giggled when I would tell them to get to work. And I don’t blame them. I’m a fool when I give orders. I suppose I’m just one of the millions who was never meant to give orders. But I don’t mind anymore. There’s a twenty-three-year-old kid my boss just hired. He’s only twenty-three, and I am thirty-one and have worked at the same place for four years. But I know that one day he will become head printer, and I will be his assistant. But I don’t mind knowing this anymore.</p>-->
+<!--    &lt;!&ndash; <h2 class="mb-4">Free Download at Start Bootstrap!</h2>-->
+<!--    <a class="btn btn-light btn-xl" href="https://startbootstrap.com/theme/creative/">Download Now!</a> &ndash;&gt;-->
+<!--  </div>-->
+<!--</section>-->
+
+<!-- Contact-->
+
+<section class="page-section bg-dark text-white" style="background-image: url(img/15.png); background-size: cover; padding-bottom: 4rem">
+    <div class="px-4 px-lg-5 text-center">
+<!--        font-size: 1.3em-->
+        <div style="max-width: 100%;margin-left: 15%;margin-right: 15%;">
+            <div class="form-inline" style="display: block;float: none;margin-left: auto;margin-right: auto;margin-bottom:5px ">
+<!--                <div class="Line1 align-items-lg-center text-center justify-content-lg-center align-self-lg-center aligncenter"></div>-->
+                <div class="font-weight-bold title_inv">What is CCmapping? </div>
+<!--                <div class="Line2" ></div>-->
+            </div>
+            <br/>
+                <p style="font-size: 1.2rem">CCmapping is an online tool that was exclusively developed for visualizing and exporting the population-based bidirectional atlas for callosal connections between the midsagittal section of the corpus callosum (mCC) and cortical regions. This comprehensive atlas was estimated using high-quality diffusion MRI tractography from 928 healthy adults. The connectional topographic maps within this atlas have the most fine-grained spatial resolution (voxel on the mCC and small patch on the cortical surface) and show excellent validity and reproducibility.
+                </p>
+            <br/>
+            <a class="text-white-75" style="text-decoration: none;text-align: center">
+            </a>
+
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <a class="text-white-75" style="text-decoration: none;">
+                <img src="img/1234.jpg" class="text-center" style="width: 100%;height:auto;border-radius: 1%" alt="">
+            </a>
+        </div>
+    </div>
+
+
+
+<!--    Usage-->
+    <div class="container" style="margin-top: 8rem">
+        <div class="align-items-center" style="text-align: center">
+<!--            <a href="usage.html" style="text-decoration: none;">-->
+            <a style="text-decoration: none;">
+                <h2 class="font-weight-bold title_inv2" style="margin-bottom: 3rem;" >Usage</h2>
+            </a>
+
+            <div class="clear"></div>
+
+        </div>
+
+
+        <div class="row" style="float: outside">
+<!--            <a class="text-white-75" href="" style="text-decoration: none;">-->
+                <div class="col-lg-5" style="vertical-align:central;box-sizing: border-box">
+                    <br/>
+                    <h4 class="" style="margin-top:1rem; margin-bottom: 1rem">Select a voxel on the mCC,<br/>check its connected cortical topographic map.</h4>
+<!--                    <p style="font-size: 1.2rem">-->
+                </div>
+                <div class="col-lg-7" style="vertical-align:central;box-sizing: border-box">
+                    <img src="img/usage-1.png" class="text-center" style="width: 100%;height:auto;border-radius: 1%;padding-left: 1.5rem" alt="">
+                </div>
+<!--            </a>-->
+        </div>
+
+<!--        <div class="row align-items-center" style="vertical-align:top;margin-top: 8rem">-->
+        <div class="row" style="margin-top: 8rem">
+            <!--            <a class="text-white-75" href="" style="text-decoration: none;">-->
+            <div class="col-lg-7" style="box-sizing: border-box">
+
+                <img src="img/usage-2.png" style="width: 100%;height:auto;border-radius: 1%;padding-right: 1.5rem" alt="">
+            </div>
+            <div class="col-lg-5" style="margin-top:1rem;box-sizing: border-box; padding-left: 3rem">
+<!--            <div class="col-lg-5" style="display:inline-block; vertical-align:top; box-sizing: border-box; padding-left: 3rem">-->
+<!--                <h4 class="" style="margin-top:-3rem;margin-bottom: 2.5rem">The Right Side</h4>-->
+                <h4 class="" style="margin-top:1rem; margin-bottom: 1rem">Select a parcel on the cortical surface,<br/>check its connected mCC topographic map.</h4>
+<!--                <p class="" style="margin-bottom: 2.5rem">The Right Side</p>-->
+
+<!--                <p style="font-size: 1.2rem">The right side of the interface, i.e., the cortical surface panel, supports 1) region selection on the cortical surface while viewing mCC topographic maps, and 2) visualization of cortical topographic maps after selecting a specific mCC voxel or subdivision within the mCC panel on the left side.</p>-->
+<!--                The right side of the interface, i.e., the cortical surface panel, supports 1) region selection on the cortical surface while viewing mCC topographic maps, and 2) visualization of cortical topographic maps after selecting a specific mCC voxel or subdivision within the mCC panel on the left side.-->
+            </div>
+            <!--            </a>-->
+        </div>
+        <div class="row" style="margin-top: 8rem">
+            <!--            <a class="text-white-75" href="" style="text-decoration: none;">-->
+            <div class="col-lg-5" style="vertical-align:central;box-sizing: border-box">
+                <br/>
+                <h4 class="" style="margin-top:1rem; margin-bottom: 1rem">Upload a ROI on the mCC,<br/>check its connected cortical topographic map.</h4>
+                <!--                    <p style="font-size: 1.2rem">-->
+            </div>
+            <div class="col-lg-7" style="vertical-align:central;box-sizing: border-box">
+                <img src="img/usage-3.png" class="text-center" style="width: 100%;height:auto;border-radius: 1%;padding-left: 1.5rem" alt="">
+            </div>
+            <!--            </a>-->
+        </div>
+
+        <!--        <div class="row align-items-center" style="vertical-align:top;margin-top: 8rem">-->
+        <div class="row" style="margin-top: 8rem">
+            <!--            <a class="text-white-75" href="" style="text-decoration: none;">-->
+            <div class="col-lg-7" style="box-sizing: border-box">
+
+                <img src="img/usage-4.png" style="width: 100%;height:auto;border-radius: 1%;padding-right: 1.5rem" alt="">
+            </div>
+            <div class="col-lg-5" style="margin-top:1rem;box-sizing: border-box; padding-left: 3rem">
+                <!--            <div class="col-lg-5" style="display:inline-block; vertical-align:top; box-sizing: border-box; padding-left: 3rem">-->
+                <!--                <h4 class="" style="margin-top:-3rem;margin-bottom: 2.5rem">The Right Side</h4>-->
+                <h4 class="" style="margin-top:1rem; margin-bottom: 1rem">Upload a ROI on the cortical surface,<br/>check its connected mCC topographic map.</h4>
+                <!--                <p class="" style="margin-bottom: 2.5rem">The Right Side</p>-->
+
+                <!--                <p style="font-size: 1.2rem">The right side of the interface, i.e., the cortical surface panel, supports 1) region selection on the cortical surface while viewing mCC topographic maps, and 2) visualization of cortical topographic maps after selecting a specific mCC voxel or subdivision within the mCC panel on the left side.</p>-->
+                <!--                The right side of the interface, i.e., the cortical surface panel, supports 1) region selection on the cortical surface while viewing mCC topographic maps, and 2) visualization of cortical topographic maps after selecting a specific mCC voxel or subdivision within the mCC panel on the left side.-->
+            </div>
+            <!--            </a>-->
+        </div>
+
+<!--        <div class="row" style="margin-top: 8rem">-->
+<!--            &lt;!&ndash;            <a class="text-white-75" href="" style="text-decoration: none;">&ndash;&gt;-->
+<!--            <div class="col-lg-5" style="box-sizing: border-box">-->
+<!--                <h4 class="" style="margin-top:-1rem;margin-bottom: 1.5rem">File-uploading</h4>-->
+<!--                <p style="font-size: 1.2rem">CCmapping also provides file-uploading services, which enable online estimation and visualization of topographic maps for a customized region of interest (ROI) on the mCC or cortical ROI. The customized- ROI mask file could be uploaded to the upper right-up corner within the mCC or cortical surface panel.</p>-->
+<!--            </div>-->
+<!--            <div class="col-lg-7" style="box-sizing: border-box">-->
+
+<!--                <img src="img/up.png" class="text-center" style="width: 100%;height:auto;border-radius: 1%;padding-left: 1.5rem" alt="">-->
+<!--            </div>-->
+<!--            &lt;!&ndash;            </a>&ndash;&gt;-->
+<!--        </div>-->
+    </div>
+
+
+
+<!--Usage-->
+
+
+
+
+
+
+
+    <div class="px-4 px-lg-5 text-center" style="margin-top: 8rem;margin-bottom: 3rem">
+        <div style="max-width: 100%;margin-left: 15%;margin-right: 15%">
+
+            <a class="title_inv3" style="text-decoration: none;">
+                <h2 class="font-weight-bold" style="color: white">About Us</h2>
+            </a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row" style="margin-bottom: 30px;margin-top: 20px">
+            <div class="col-lg-4" style="text-align: center">
+                <a class="text-white-75" style="text-decoration: none;">
+                    <img src="img/us11.png" style="width: 300px;height:247px;border-radius: 5%">
+                    <h3 class="text-white-75" style="margin-top: 20px">Yirong Xiong (she/her)</h3>
+<!--                    <p style="font-size: 1.2rem;padding-left: 15px;padding-right: 15px">-->
+<!--                        <a style="color: rgba(255, 255, 255, 0.75)">yirong.xiong@student.uni-tuebingen.de<br/></a>-->
+<!--                        <a href="https://github.com/AFurryBear">https://github.com/AFurryBear<br/></a>-->
+<!--                        <a href="https://twitter.com/AFurryBear1">https://twitter.com/AFurryBear1<br/></a>-->
+<!--                    </p>-->
+                    <ul style="list-style: none;">
+
+                        <li itemprop="homeLocation" show_title="false" aria-label="Home location: Tuebingen"><svg class="octicon octicon-location" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M11.536 3.464a5 5 0 010 7.072L8 14.07l-3.536-3.535a5 5 0 117.072-7.072v.001zm1.06 8.132a6.5 6.5 0 10-9.192 0l3.535 3.536a1.5 1.5 0 002.122 0l3.535-3.536zM8 9a2 2 0 100-4 2 2 0 000 4z"></path></svg>
+                            <span class="p-label">Tuebingen, Germany</span>
+                        </li>
+
+                        <li itemprop="email" aria-label="Email: renata_xiong@hotmail.com" ><svg class="octicon octicon-mail" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M1.75 2A1.75 1.75 0 000 3.75v.736a.75.75 0 000 .027v7.737C0 13.216.784 14 1.75 14h12.5A1.75 1.75 0 0016 12.25v-8.5A1.75 1.75 0 0014.25 2H1.75zM14.5 4.07v-.32a.25.25 0 00-.25-.25H1.75a.25.25 0 00-.25.25v.32L8 7.88l6.5-3.81zm-13 1.74v6.441c0 .138.112.25.25.25h12.5a.25.25 0 00.25-.25V5.809L8.38 9.397a.75.75 0 01-.76 0L1.5 5.809z"></path></svg>
+                            <a class="Link--primary" href="mailto:yirong.xiong@student.uni-tuebingen.de">yirong.xiong@student.uni-tuebingen.de</a>
+                        </li>
+                        <li itemprop="url"><img src="img/github.svg" alt="My Happy SVG" height="16" width="16" color="white"/> <a class="Link--primary" href="https://github.com/AFurryBear">@AFurryBear</a>
+<!--                        <li itemprop="url" data-test-selector="profile-website-url"><svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-link">-->
+<!--                            <path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path>-->
+<!--                        </svg>-->
+<!--                            <a rel="nofollow me" class="Link&#45;&#45;primary" href="http://afurrybear.com">afurrybear.com</a>-->
+<!--                        </li>-->
+                        <li itemprop="twitter"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="16" height="16" viewBox="0 0 273.5 222.3" role="img" aria-labelledby="jk853f2un7bpkpyzpm3fkhgeefswjqk" class="octicon"><title id="jk853f2un7bpkpyzpm3fkhgeefswjqk">Twitter</title><path d="M273.5 26.3a109.77 109.77 0 0 1-32.2 8.8 56.07 56.07 0 0 0 24.7-31 113.39 113.39 0 0 1-35.7 13.6 56.1 56.1 0 0 0-97 38.4 54 54 0 0 0 1.5 12.8A159.68 159.68 0 0 1 19.1 10.3a56.12 56.12 0 0 0 17.4 74.9 56.06 56.06 0 0 1-25.4-7v.7a56.11 56.11 0 0 0 45 55 55.65 55.65 0 0 1-14.8 2 62.39 62.39 0 0 1-10.6-1 56.24 56.24 0 0 0 52.4 39 112.87 112.87 0 0 1-69.7 24 119 119 0 0 1-13.4-.8 158.83 158.83 0 0 0 86 25.2c103.2 0 159.6-85.5 159.6-159.6 0-2.4-.1-4.9-.2-7.3a114.25 114.25 0 0 0 28.1-29.1" fill="currentColor"></path></svg>
+
+                            <a rel="nofollow me" class="Link--primary" href="https://twitter.com/AFurryBear1">@AFurryBear1</a>
+                        </li>
+                    </ul>
+                </a>
+            </div><!-- /.col-lg-4 -->
+
+            <div class="col-lg-4" style="text-align: center">
+                <a class="text-white-75" style="text-decoration: none;">
+                    <img src="img/us3.jpg" style="width: 300px;height:247px;border-radius: 5%">
+                    <h3 class="text-white-75" style="margin-top: 20px">Liyuan Yang</h3>
+
+                    <ul style="list-style: none;">
+
+                        <li itemprop="homeLocation" show_title="false" aria-label="Home location: Tuebingen"><svg class="octicon octicon-location" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M11.536 3.464a5 5 0 010 7.072L8 14.07l-3.536-3.535a5 5 0 117.072-7.072v.001zm1.06 8.132a6.5 6.5 0 10-9.192 0l3.535 3.536a1.5 1.5 0 002.122 0l3.535-3.536zM8 9a2 2 0 100-4 2 2 0 000 4z"></path></svg>
+                            <span class="p-label">Beijing, China</span>
+                        </li>
+
+                        <li itemprop="email" aria-label="Email: renata_xiong@hotmail.com" ><svg class="octicon octicon-mail" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M1.75 2A1.75 1.75 0 000 3.75v.736a.75.75 0 000 .027v7.737C0 13.216.784 14 1.75 14h12.5A1.75 1.75 0 0016 12.25v-8.5A1.75 1.75 0 0014.25 2H1.75zM14.5 4.07v-.32a.25.25 0 00-.25-.25H1.75a.25.25 0 00-.25.25v.32L8 7.88l6.5-3.81zm-13 1.74v6.441c0 .138.112.25.25.25h12.5a.25.25 0 00.25-.25V5.809L8.38 9.397a.75.75 0 01-.76 0L1.5 5.809z"></path></svg>
+                            <a class="Link--primary" href="mailto:yangly321@mail.bnu.edu.cn">yangly321@mail.bnu.edu.cn</a>
+                        </li>
+                        <li itemprop="twitter"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="16" height="16" viewBox="0 0 273.5 222.3" role="img" aria-labelledby="jk853f2un7bpkpyzpm3fkhgeefswjqk" class="octicon"><title id="jk853f2un7bpkpyzpm3fkhgeefswjqk">Twitter</title><path d="M273.5 26.3a109.77 109.77 0 0 1-32.2 8.8 56.07 56.07 0 0 0 24.7-31 113.39 113.39 0 0 1-35.7 13.6 56.1 56.1 0 0 0-97 38.4 54 54 0 0 0 1.5 12.8A159.68 159.68 0 0 1 19.1 10.3a56.12 56.12 0 0 0 17.4 74.9 56.06 56.06 0 0 1-25.4-7v.7a56.11 56.11 0 0 0 45 55 55.65 55.65 0 0 1-14.8 2 62.39 62.39 0 0 1-10.6-1 56.24 56.24 0 0 0 52.4 39 112.87 112.87 0 0 1-69.7 24 119 119 0 0 1-13.4-.8 158.83 158.83 0 0 0 86 25.2c103.2 0 159.6-85.5 159.6-159.6 0-2.4-.1-4.9-.2-7.3a114.25 114.25 0 0 0 28.1-29.1" fill="currentColor"></path></svg>
+                            <a rel="nofollow me" class="Link--primary" href="https://twitter.com/yangly321">@yangly321</a>
+                        </li>
+                    </ul>
+                </a>
+            </div>
+
+            <div class="col-lg-4" style="text-align: center">
+                <a class="text-white-75" style="text-decoration: none;">
+                    <img src="img/us2.png" style="width: 300px;height:247px;border-radius: 5%">
+                    <h3 class="text-white-75" style="margin-top: 20px">Prof. Dr. Gaolang Gong</h3>
+
+                    <ul style="list-style: none;">
+
+                        <li itemprop="homeLocation" show_title="false" aria-label="Home location: Tuebingen"><svg class="octicon octicon-location" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M11.536 3.464a5 5 0 010 7.072L8 14.07l-3.536-3.535a5 5 0 117.072-7.072v.001zm1.06 8.132a6.5 6.5 0 10-9.192 0l3.535 3.536a1.5 1.5 0 002.122 0l3.535-3.536zM8 9a2 2 0 100-4 2 2 0 000 4z"></path></svg>
+                            <span class="p-label">Beijing, China</span>
+                        </li>
+
+                        <li itemprop="email" aria-label="Email: renata_xiong@hotmail.com" ><svg class="octicon octicon-mail" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M1.75 2A1.75 1.75 0 000 3.75v.736a.75.75 0 000 .027v7.737C0 13.216.784 14 1.75 14h12.5A1.75 1.75 0 0016 12.25v-8.5A1.75 1.75 0 0014.25 2H1.75zM14.5 4.07v-.32a.25.25 0 00-.25-.25H1.75a.25.25 0 00-.25.25v.32L8 7.88l6.5-3.81zm-13 1.74v6.441c0 .138.112.25.25.25h12.5a.25.25 0 00.25-.25V5.809L8.38 9.397a.75.75 0 01-.76 0L1.5 5.809z"></path></svg>
+                            <a class="Link--primary" href="mailto:gaolang.gong@bnu.edu.cn">gaolang.gong@bnu.edu.cn</a>
+                        </li>
+                        <li itemprop="url" data-test-selector="profile-website-url"><svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-link">
+                            <path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path>
+                        </svg>
+                            <a rel="nofollow me" class="Link--primary" href="https://brain.bnu.edu.cn/English/Faculty/CurrentFaculty/Gzz/2b1b2b8f117e4e49aa2dc12278d15c34.htm">brain.bnu.edu.cn</a>
+                        </li>
+                        <li itemprop="twitter"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="16" height="16" viewBox="0 0 273.5 222.3" role="img" aria-labelledby="jk853f2un7bpkpyzpm3fkhgeefswjqk" class="octicon"><title id="jk853f2un7bpkpyzpm3fkhgeefswjqk">Twitter</title><path d="M273.5 26.3a109.77 109.77 0 0 1-32.2 8.8 56.07 56.07 0 0 0 24.7-31 113.39 113.39 0 0 1-35.7 13.6 56.1 56.1 0 0 0-97 38.4 54 54 0 0 0 1.5 12.8A159.68 159.68 0 0 1 19.1 10.3a56.12 56.12 0 0 0 17.4 74.9 56.06 56.06 0 0 1-25.4-7v.7a56.11 56.11 0 0 0 45 55 55.65 55.65 0 0 1-14.8 2 62.39 62.39 0 0 1-10.6-1 56.24 56.24 0 0 0 52.4 39 112.87 112.87 0 0 1-69.7 24 119 119 0 0 1-13.4-.8 158.83 158.83 0 0 0 86 25.2c103.2 0 159.6-85.5 159.6-159.6 0-2.4-.1-4.9-.2-7.3a114.25 114.25 0 0 0 28.1-29.1" fill="currentColor"></path></svg>
+
+                            <a rel="nofollow me" class="Link--primary" href="https://twitter.com/Gaolang_Gong">@Gaolang_Gong</a>
+                        </li>
+                    </ul>
+                </a>
+            </div>
+
+<!--            <div class="col-lg-4 align-items-center justify-content-center text-center" style="text-align: center">-->
+<!--&lt;!&ndash;                <a class="text-white-75" href="about.html" style="text-decoration: none;">&ndash;&gt;-->
+<!--                <a class="text-white-75" style="text-decoration: none;">-->
+<!--                    <img src="img/us31.png" style="width: 340px;height:280px;border-radius: 5%">-->
+<!--                    <h3 class="text-white-75" style="margin-top: 20px">Gong Lab</h3>-->
+<!--                    <p style="font-size: 1.2rem;padding-left: 30px;padding-right: 30px">-->
+<!--&lt;!&ndash;                    <p style="font-size: 1.2rem;padding-left: 30px;padding-right: 30px">Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismo<a href="usage.html">&nbsp;details>></a>&ndash;&gt;-->
+<!--                    </p>-->
+<!--                </a>-->
+<!--            </div>&lt;!&ndash; /.col-lg-4 &ndash;&gt;-->
+
+        </div>
+    </div>
+
+</section>
+<div style="width: 100%; background-image:url(img/15.png); display: flex; text-item: center;justify-content:center;">
+    <div style="width: 30%;display: flex;">
+<!--        <script type="text/javascript" id="clustrmaps" src="//clustrmaps.com/map_v2.js?d=8XR0IiTRBeX78EKnKamidJ59VtPyKRcawmRQHSenOwc"></script>-->
+        <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?cl=888888&w=a&t=tt&d=8XR0IiTRBeX78EKnKamidJ59VtPyKRcawmRQHSenOwc&co=243144&cmo=ffae53&cmn=ffae53"></script>
+<!--    <script type="text/javascript" src="//rf.revolvermaps.com/0/0/2.js?i=5a7svy43gy6&amp;m=0&amp;s=130&amp;c=ff0000&amp;t=1" async="async"></script>-->
+<!--    <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?cl=ffffff&w=150&t=n&d=qRfGtCyumKD_k_bVX26frT-dTv89zON7DtvL8oZ95SU"></script>-->
+    </div>
+
+</div>
+<!--    <div style="width: 100%; height:40px; line-height:40px;background-image:url(img/15.png);text-align: center;">-->
+<!--         <div style="color: #ffffff;font-size: 15px" > <a style="color: wheat;text-decoration: none;" href="https://beian.miit.gov.cn" target="_blank">京ICP备2022027253号</a></div>-->
+<!--    </div>-->
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- SimpleLightbox plugin JS-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.js"></script>
+<!--        <script src="js/jquery-1.6.4.min.js" async="async"></script>-->
+        <script src="js/jquery-1.6.4.min.js"></script>
+        <script src="js/jquery-ui-1.8.10.custom.min.js"></script>
+        <script src="./js/bootstrap.min.js"></script>
+</body>

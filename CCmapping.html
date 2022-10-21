@@ -26,8 +26,9 @@
 -->
 
 <head>
+  <link rel="icon" type="image/png" sizes="16x16" href="img/ccmapping-01.png">
   <title>
-    BrainBrowser Volume Viewer
+    CCmapping
   </title>
   <link type="text/css" href="css/ui-darkness/jquery-ui-1.8.10.custom.css" rel="Stylesheet" />
   <link type="text/css" href="css/common.css" rel="Stylesheet" />
@@ -41,16 +42,15 @@
         aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
+      <div style="margin-top:0.20rem" class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" href="CCmapping_index.html">Home</a>
+<!--            <a class="nav-link" href="CCmapping_index.html">Home</a>-->
+            <a class="nav-link" href="home.html">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="CCmapping_index.html">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="CCmapping_index.html">Usage</a>
+<!--            <a class="nav-link" href="CCmapping_usage.html">Usage</a>-->
+            <a class="nav-link" href="usage.html">Usage</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" data-toggle="dropdown"
@@ -298,10 +298,10 @@
                 <p id="mask3_name" style="display: inline"> CC ROI 3</p></br>
               </label>
             </div>
-            <input class="upload-button" id="download-nifti1" type="button" value="cc mask"
+            <input class="upload-button" id="download-nifti1" type="button" value="mCC mask"
             style="position:relative; font-size: 0.6rem">
             <form id="volume-file" style="display:inline;">
-              <input class="upload-button" id="fake-file-upload" type="button" value="nifti1-file"
+              <input class="upload-button" id="fake-file-upload" type="button" value="upload"
                 style="position:relative; font-size: 0.6rem">
               <input id=nifti1-file type=file name=nifti1-file hidden="true">
               <input id=volume-file class="upload-button" style="float:right" type="button" value=upload
@@ -460,7 +460,7 @@
                 </select>
                 <form id=surface-file style="display:inline;">
                   <input class="upload-button" id="fake-gifti-upload" name="uploadbutton" type="button"
-                    value="gifti1-file" style="position:relative; font-size: 0.6rem">
+                    value="upload" style="position:relative; font-size: 0.6rem">
                   <input id=gifti1-file type=file name=gifti1-file hidden="true">
                   <input id=surface-file-gifti1-submit class="upload-button" type="button" value=upload hidden="true">
                 </form>
