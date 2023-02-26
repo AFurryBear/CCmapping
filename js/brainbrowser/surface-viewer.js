@@ -645,6 +645,7 @@
             window.surfviewer.blend(0.8, 0.2);
             upload = $("[name=surface-file-type]:checked").val();
             fileName = $("[name=surfmask]:checked").val();
+            console.log(fileName)
             returnUrl = mainpath + upload + "/gifti1/" + fileName + '.tex.gii';
             template = fileName.split('.')[1];
             colormap = false;
@@ -766,23 +767,22 @@
          * @description 
          * !add uploaded mask
          * */
-        addMask: function (pathobj) {
+        addMask: function (flag) {
           let headers = $("#result");
           let select = "";
-          console.log(pathobj.flag)
           select += '<h3>Mask Type</h3>';
           select += '<label for="surfmask">';
-          select += '<input type="radio" name="surfmask" value=' + pathobj.flag[0] + ' checked="true">' + pathobj.flag[0].substr(8, 10);
-          select += '<input type="radio" name="surfmask" value=' + pathobj.flag[1] + '>' + pathobj.flag[1].substr(8, 10);
-          for (var i = 2; i < pathobj.flag.length-2; i+=2) {
-            select += '<br /><input type="radio" name="surfmask" value=' + pathobj.flag[i] + '>' + pathobj.flag[i].substr(8, 10);
-            select += '<input type="radio" name="surfmask" value=' + pathobj.flag[i+1] + '>' + pathobj.flag[i+1].substr(8, 10);
+          select += '<input type="radio" name="surfmask" value=' + flag[0] + ' checked="true">' + flag[0].substr(8, 10);
+          select += '<input type="radio" name="surfmask" value=' + flag[1] + '>' + flag[1].substr(8, 10);
+          for (var i = 2; i < flag.length-2; i+=2) {
+            select += '<br /><input type="radio" name="surfmask" value=' + flag[i] + '>' + flag[i].substr(8, 10);
+            select += '<input type="radio" name="surfmask" value=' + flag[i+1] + '>' + flag[i+1].substr(8, 10);
           }
           select += '<br /><input type="radio" name="surfmask" value="uploadF.mask"> original mask(only for viewing)'
           select += '</label>';
           headers.html(select);
-          return headers
         },
+
         /** 
          * @doc function
          * @param {pathobj} object
@@ -791,11 +791,13 @@
          * !add functions for the uploaded mask
          * */
         uploadPanel: function (pathobj, callback) {
+          console.log(pathobj)
 
           let element = {};
           element.id = 'mask' + (window.surfviewer.uploadDir.length + 1);
           element.path = pathobj.path;
-          element.div = window.surfviewer.addMask(pathobj);
+          element.flag = pathobj.flag;
+          window.surfviewer.addMask(pathobj.flag);
           window.surfviewer.uploadDir.push(element);
           $("#smask" + (window.surfviewer.uploadDir.length)).attr("value", pathobj.path);
           $("#smask" + (window.surfviewer.uploadDir.length)).attr("disabled", false);
@@ -826,24 +828,36 @@
             if ($("[name=surface-file-type]:checked").val() != "Group_result2/") {
               window.loading_con = 4;
               viewer.setAttribute("fix_color_range", false);
-              $("#result").html("");
-              window.surfviewer.uploadDir[Number($("[name=surface-file-type]:checked")[0].id[5]) - 1].div.appendTo("#result")
+              let flag = window.surfviewer.uploadDir[Number($("[name=surface-file-type]:checked")[0].id[5]) - 1].flag;
+              window.surfviewer.addMask(flag);
               $("#result").show();
               $("[name=surfmask]").change(function () {
                 let info = window.surfviewer.model_data.get();
                 window.surfviewer.getDataURL(info, window.surfviewer, function (url, viewer, colormap, template) {
-                  surfviewer.loadfromURL(url, viewer, colormap, template)
+                  surfviewer.loadfromURL(url, viewer, colormap, template);
+                  let upload = $("[name=surface-file-type]:checked").val();
+                  let fileName = $("[name=surfmask]:checked").val();
+                  if (fileName != "uploadF.mask") {
+                    window.viewer.uploadData('save-file/' + upload + '/json/' + fileName + '.nii', true);
+                  }
                 });
+
+              });
+              let info = window.surfviewer.model_data.get();
+              window.surfviewer.getDataURL(info, window.surfviewer, function (url, viewer, colormap, template) {
+                viewer.loadfromURL(url, viewer, colormap, template);
+                let upload = $("[name=surface-file-type]:checked").val();
+                let fileName = $("[name=surfmask]:checked").val();
+                if (fileName != "uploadF.mask") {
+                  window.viewer.uploadData('save-file/' + upload + '/json/' + fileName + '.nii', true);
+                }
               });
             } else {
               window.loading_con = 0;
               // $("#parcellations").show();
               $("#result").html("");
+              window.viewer.uploadData('models/MNICC07mm_XXmask_final_final_131.nii', true);
             }
-            let info = window.surfviewer.model_data.get();
-            window.surfviewer.getDataURL(info, window.surfviewer, function (url, viewer, colormap, template) {
-              viewer.loadfromURL(url, viewer, colormap, template)
-            });
 
           });
           callback();

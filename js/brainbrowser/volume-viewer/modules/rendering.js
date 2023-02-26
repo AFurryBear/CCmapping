@@ -70,6 +70,12 @@ BrainBrowser.VolumeViewer.modules.rendering = function(viewer) {
       window.requestAnimationFrame(render);
 
       viewer.draw();
+      // console.log(display)
+      // console.log(display_1)
+      // console.log(display_2)
+      // console.log(count_1)
+      // console.log(count_2)
+      // console.log(count_3)
       if(display!=0){
         $("#surface-browser").show();
         $("#volume-browser").show();
@@ -96,6 +102,7 @@ BrainBrowser.VolumeViewer.modules.rendering = function(viewer) {
         count_2=0;
         count_3=0;
         init_1=0;
+        $("#loading").hide();
       }
     })();
   };

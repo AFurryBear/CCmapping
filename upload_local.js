@@ -59,6 +59,9 @@ app.get('/download/*', (req, res) => {
 
 })
 app.post('/multiSurface',function(req,res){
+    if (typeof req.body.parcellation !== 'undefined'){
+
+
     let parcellation=req.body.parcellation;
     let parcelID=req.body.parcelID;
     console.log(parcellation);
@@ -80,45 +83,75 @@ app.post('/multiSurface',function(req,res){
         res.end();
 
     });
+    }else{
+        res.end();
+    }
 
 })
-app.get('/threshold',function(req,res)     {
-    console.log(req.query.type);
-    console.log(req.query.name);
-    connection.query("SELECT value from HCP_CC."+req.query.type+" where name='"+req.query.name+"';",function (error,results){
-        if (error) throw error;
-        if (results){
-            let dataString = JSON.stringify(results);
-            let data = JSON.parse(dataString);
-            res.json({
-                value:data[0].value,
-            });
-        }
+app.get('/threshold',function(req,res){
+    if (typeof req.query !== 'undefined'){
+        connection.query("SELECT value from HCP_CC."+req.query.type+" where name='"+req.query.name+"';",function (error,results){
+
+            if (results){
+                let dataString = JSON.stringify(results);
+                let data = JSON.parse(dataString);
+                res.json({
+                    value:data[0].value,
+                });
+                res.end();
+            }
+            else{
+                if (error){
+                    res.json({
+                        value:0,
+                    });
+                    res.end();
+                }
+
+            }
+
+
+        })
+    } else{
         res.end();
-    })
+    }
+    // console.log(req.query.type);
+    // console.log(req.query.name);
+
 })
 app.get('/parcelmeta',function(req,res){
-    console.log(req.query.template);
-    //console.log("SELECT zscore,behavior,pname from HCP_CC.meta_cognition where template='"+req.query.template+"' and pname in ("+req.query.roi1+","+req.query.roi2+") order by pname,zscore desc;")
-    connection.query("SELECT zscore,behavior,pname from HCP_CC.meta_cognition where template='"+req.query.template+"' and pname in ("+req.query.roi1+","+req.query.roi2+") order by pname,zscore;", function (error, results, fields) {
-        if (error) throw error;
-        if (results){
-            let dataString = JSON.stringify(results);
-            let data = JSON.parse(dataString);
-            //console.log('The solution is: ', data);
-            let zscore=[],behavior=[];
-            for(i=0;i<data.length;i++){
-                zscore.push(data[i].zscore);
-                behavior.push(data[i].behavior);
+    if (typeof req.query !== 'undefined') {
+        //console.log("SELECT zscore,behavior,pname from HCP_CC.meta_cognition where template='"+req.query.template+"' and pname in ("+req.query.roi1+","+req.query.roi2+") order by pname,zscore desc;")
+        connection.query("SELECT zscore,behavior,pname from HCP_CC.meta_cognition where template='" + req.query.template + "' and pname in (" + req.query.roi1 + "," + req.query.roi2 + ") order by pname,zscore;", function (error, results, fields) {
+
+            if (results) {
+                let dataString = JSON.stringify(results);
+                let data = JSON.parse(dataString);
+                //console.log('The solution is: ', data);
+                let zscore = [], behavior = [];
+                for (i = 0; i < data.length; i++) {
+                    zscore.push(data[i].zscore);
+                    behavior.push(data[i].behavior);
+                }
+                res.json({
+                    zscore: zscore,
+                    behavior: behavior,
+                });
+                res.end();
+            } else {
+                if (error) {
+                    res.end();
+                }
+
             }
-            res.json({
-                zscore:zscore,
-                behavior:behavior,
-            });
-        }
+
+        });
+    } else {
         res.end();
+    }
+
     });
-});
+
 
 app.post('/upload', upload.single('nifti1-file'), function (req, res) {
     //TODO:need consider .nii.gz
@@ -262,7 +295,7 @@ app.post('/uploadSurface', upload.single('gifti1-file'), function (req, res) {
     }
 });
 //app.listen(5700)
-app.listen(8080,'0.0.0.0',() => {
+app.listen(8998,'0.0.0.0',() => {
     // client.country('142.1.1.1').then(response => {
     //     console.log(response);
     //     console.log(response.country.isoCode); // 'CA'

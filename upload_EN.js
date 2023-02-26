@@ -15,14 +15,14 @@ var geoip = require('geoip-country');
 var upload = multer({ dest:  path.join(__dirname,'upload-single')});
 var app = express();
 var mysql      = require('mysql');
-var connection = mysql.createConnection({
+var connection = mysql.createPool({
     host     : 'localhost',
     user     : 'root',
     password : 'Gongclub123',
     database : 'HCP_CC'
 });
-
-connection.connect();
+//
+// connection.connect();
 app.use(express.static(path.join(__dirname, './')));
 app.use(express.json());
 app.use(express.text());
@@ -59,70 +59,99 @@ app.get('/download/*', (req, res) => {
 
 })
 app.post('/multiSurface',function(req,res){
-    let parcellation=req.body.parcellation;
-    let parcelID=req.body.parcelID;
-    console.log(parcellation);
-    console.log(parcelID);
-    var r = Math.random().toString(36).substr(2, 3) + "-" + Math.random().toString(36).substr(2, 3) + "-" + Math.random().toString(36).substr(2, 4);
-    console.log('python3.8 ' + path.join(__dirname, 'py/multiSurfResult.py') + ' ' + parcellation+' '+parcelID+' '+r.toUpperCase()+' '+__dirname)
-    cp.exec('python3.8 ' + path.join(__dirname, 'py/multiSurfResult.py') + ' ' + parcellation+' '+parcelID+' '+r.toUpperCase()+' '+__dirname, (err, stdout, stderr) => {
-        if (err) console.log('stderr', err);
-        if (stdout) {
-            console.log('stdout', stdout);
-            if (stderr) console.log('stderr', stderr);
-            res.json({
-                path: r.toUpperCase(),
-                std: stdout,
-                err: err,
-                stderr: stderr
-            })
-        }
-        res.end();
+    if (typeof req.body.parcellation !== 'undefined'){
 
-    });
 
-})
-app.get('/threshold',function(req,res)     {
-    console.log(req.query.type);
-    console.log(req.query.name);
-    connection.query("SELECT value from HCP_CC."+req.query.type+" where name='"+req.query.name+"';",function (error,results){
-        if (results){
-            let dataString = JSON.stringify(results);
-            let data = JSON.parse(dataString);
-            res.json({
-                value:data[0].value,
-            });
-        }else if (error) {
-            res.json({
-                value:0,
-            });
-        };
-        res.end();
-    })
-})
-
-app.get('/parcelmeta',function(req,res){
-    console.log(req.query.template);
-    //console.log("SELECT zscore,behavior,pname from HCP_CC.meta_cognition where template='"+req.query.template+"' and pname in ("+req.query.roi1+","+req.query.roi2+") order by pname,zscore desc;")
-    connection.query("SELECT zscore,behavior,pname from HCP_CC.meta_cognition where template='"+req.query.template+"' and pname in ("+req.query.roi1+","+req.query.roi2+") order by pname,zscore;", function (error, results, fields) {
-        if (error) throw error;
-        if (results){
-            let dataString = JSON.stringify(results);
-            let data = JSON.parse(dataString);
-            //console.log('The solution is: ', data);
-            let zscore=[],behavior=[];
-            for(i=0;i<data.length;i++){
-                zscore.push(data[i].zscore);
-                behavior.push(data[i].behavior);
+        let parcellation=req.body.parcellation;
+        let parcelID=req.body.parcelID;
+        console.log(parcellation);
+        console.log(parcelID);
+        var r = Math.random().toString(36).substr(2, 3) + "-" + Math.random().toString(36).substr(2, 3) + "-" + Math.random().toString(36).substr(2, 4);
+        console.log('python3.8 ' + path.join(__dirname, 'py/multiSurfResult.py') + ' ' + parcellation+' '+parcelID+' '+r.toUpperCase()+' '+__dirname)
+        cp.exec('python3.8 ' + path.join(__dirname, 'py/multiSurfResult.py') + ' ' + parcellation+' '+parcelID+' '+r.toUpperCase()+' '+__dirname, (err, stdout, stderr) => {
+            if (err) console.log('stderr', err);
+            if (stdout) {
+                console.log('stdout', stdout);
+                if (stderr) console.log('stderr', stderr);
+                res.json({
+                    path: r.toUpperCase(),
+                    std: stdout,
+                    err: err,
+                    stderr: stderr
+                })
             }
-            res.json({
-                zscore:zscore,
-                behavior:behavior,
-            });
-        }
+            res.end();
+
+        });
+    }else{
         res.end();
-    });
+    }
+
+})
+app.get('/threshold',function(req,res){
+    if (typeof req.query !== 'undefined'){
+        connection.query("SELECT value from HCP_CC."+req.query.type+" where name='"+req.query.name+"';",function (error,results){
+
+            if (results){
+                let dataString = JSON.stringify(results);
+                let data = JSON.parse(dataString);
+                res.json({
+                    value:data[0].value,
+                });
+                res.end();
+            }
+            else{
+                if (error){
+                    res.json({
+                        value:0,
+                    });
+                    res.end();
+                }
+
+            }
+
+
+        })
+    } else{
+        res.end();
+    }
+    // console.log(req.query.type);
+    // console.log(req.query.name);
+
+})
+app.get('/parcelmeta',function(req,res){
+    if (typeof req.query !== 'undefined') {
+        //console.log("SELECT zscore,behavior,pname from HCP_CC.meta_cognition where template='"+req.query.template+"' and pname in ("+req.query.roi1+","+req.query.roi2+") order by pname,zscore desc;")
+        connection.query("SELECT zscore,behavior,pname from HCP_CC.meta_cognition where template='" + req.query.template + "' and pname in (" + req.query.roi1 + "," + req.query.roi2 + ") order by pname,zscore;", function (error, results, fields) {
+
+            if (results) {
+                let dataString = JSON.stringify(results);
+                let data = JSON.parse(dataString);
+                //console.log('The solution is: ', data);
+                let zscore = [], behavior = [];
+                for (i = 0; i < data.length; i++) {
+                    zscore.push(data[i].zscore);
+                    behavior.push(data[i].behavior);
+                }
+                res.json({
+                    zscore: zscore,
+                    behavior: behavior,
+                });
+                res.end();
+            } else {
+                if (error) {
+                    res.end();
+                }
+
+            }
+
+        });
+    } else {
+        res.end();
+    }
+
 });
+
 
 app.post('/upload', upload.single('nifti1-file'), function (req, res) {
     //TODO:need consider .nii.gz

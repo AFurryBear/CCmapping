@@ -395,7 +395,11 @@
             var type;
             var len = window.viewer.datadir.split('/').length;
             var url1 = window.viewer.datadir.split('/')[len-2];
+            if (url1.substr(0,6) == 'Parcel'){
+                url1 = '1000Parcels'+url1.substr(6);
+            }
             var name = window.viewer.datadir.split('/').pop().substring(0,7);
+            console.log(name);
             var index = url1+'/'+name;
             if (window.loading_con==1){
 
@@ -432,7 +436,7 @@
                 $("#overlay-viewer-display").show();
             }
 
-            
+                $("#volume-browser").show();
             //
             // viewer.volumes[1].intensity_min = min;
             // $("#data-range-min-vol").val(min);

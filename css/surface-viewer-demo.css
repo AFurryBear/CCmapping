@@ -1,0 +1,477 @@
+/*
+* BrainBrowser: Web-based Neurological Visualization Tools
+* (https://brainbrowser.cbrain.mcgill.ca)
+*
+* Copyright (C) 2011 
+* The Royal Institution for the Advancement of Learning
+* McGill University
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as
+* published by the Free Software Foundation, either version 3 of the
+* License, or (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Affero General Public License for more details.
+*
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*
+*
+* Author: Tarek Sherif <tsherif@gmail.com> (http://tareksherif.ca/)
+* Author: Nicolas Kassis
+*/
+
+
+
+*,:after,:before{box-sizing:border-box}
+.pull-left{float:left}
+.pull-right{float:right}
+.clearfix:after,.clearfix:before{content:'';display:table}
+.clearfix:after{clear:both;display:block}
+.brain_pic{
+  top:30%;
+  width:100px;
+  height:100px;
+  position:relative;
+  margin-left: auto;
+  margin-right:auto;
+  display:block;
+}
+.loader-wrap{
+  top:60%;
+  left:50%;
+  width:374px;
+  height:194px;
+  position:fixed;
+  margin-top:-97px;
+  margin-left:-187px;
+}
+
+.bar{
+  height:5px;
+  width:100%;
+  margin:30px 0;
+  position:relative;
+  background-color:#444;
+}
+.bar:before{
+  top:0;
+  left:0;
+  width:0;
+  content:'';
+  height:inherit;
+  position:absolute;
+  background-color:#FBCE13;
+  animation:bar 15s;
+  animation-timing-function:linear;
+  animation-fill-mode:forwards;
+}
+.text{
+  color:#FBCE13;
+  font-size:1rem;
+  font-weight:500;
+  text-align:center;
+  letter-spacing:10px;
+  text-transform:uppercase;
+}
+.link {color: #ffffff}		/* 未访问的链接 */
+.visited {color: #FF8C00}	/* 已访问的链接 */
+
+
+@keyframes move{
+  0%{
+    opacity:0;
+    transform:translateX(0);
+  }
+  25%{
+    opacity:1;
+    transform:translateX(75px);
+  }
+  48%{transform:translateX(144px) translateY(0);}
+  50%{
+    transform:translateX(150px) translateY(-10px);
+  }
+  52%{transform:translateX(156px) translateY(0);}
+  100%{
+    opacity:1;
+    transform:translateX(225px);
+  }
+
+}
+
+@keyframes bar{
+  0%{width:0}
+  100%{width:95%}
+}
+
+#display {
+  position: relative;
+  height: 100%;
+}
+
+#trackInfo-container {
+  display: none;
+  position: relative;
+  background-color: white;
+  border-radius: 10px;
+  border: 2px solid #777777;
+  overflow: hidden;
+  z-index: 150;
+}
+
+#trackInfo-button {
+  position: absolute; 
+  background-color:#524e4e; 
+  width:120px;
+  height: 3%; 
+  margin-left: 93%;
+  font-weight: bold;
+  border-radius: 10px;
+  color:#ffffff;
+  border:5px solid #777777; 
+  top:95%;
+}
+
+/*#controlsVol {
+  display: none;
+  font-size: 14px;
+  position: absolute;
+  top: 40px;
+  left: 20px;
+  background-color: white;
+  border-radius: 10px;
+  height: 30px;
+  width: 0;
+  border: 2px solid #777777;
+  overflow-x: hidden;
+  padding-right: 8px;
+}*/
+
+#controls-content {
+  position: absolute;
+  top: 0.5em;
+  bottom: 0.5em;
+  left: 0.5em;
+  right: 0.5em;
+  padding: 2px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  color:#888888;
+  background-color: #888888
+}
+
+#control-content {
+  position: relative;
+  width:345px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  color:#888888;
+  background-color: #888888
+}
+
+/*#control-button {
+   position: absolute;
+   top: 10px;
+   right: 20px;
+ }*/
+
+/*#controlV-button {
+  position: absolute;
+  top: 10px;
+  left: 20px;
+}*/
+/*#download-button2{
+  position: absolute;
+  top: 10px;
+  left: 130px;
+}*/
+
+#clear-button {
+  position: absolute;
+  top: 10px;
+  right: 120px;
+}
+
+/*#download-button {
+  position: absolute;
+  top: 10px;
+  right: 185px;
+}*/
+
+
+#surface-container {
+  position:absolute;
+  background-color: #9b9b9b;
+  margin-top:3%;
+  height: 85%;
+  left: 42.5%;
+  right:2%;
+  border:10px solid #9b9b9b;
+  border-radius: 15px;
+}
+
+#surface-browser {
+  position:absolute;
+  background-color: #9b9b9b;
+  margin-top:0%;
+  top:28%;
+  height: 70%;
+  left: 5%;
+  right:5%;
+  z-index:21;
+  
+}
+
+.box {
+  background-color:rgba(0,0,0,0);
+  z-index: 51;
+}
+
+
+.combo_box {
+  background-color:rgba(0,0,0,0);
+  position:absolute;
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+  margin-buttom: auto;
+  z-index:5;
+  top:21%;
+  height:78%;
+  width: 100%;
+}
+
+.full_box {
+  top:0px;
+}
+
+.half_box {
+  display: table-cell;
+  position:absolute;
+}
+
+.quarter_box {
+  width: 20%;
+  float: left;
+}
+
+.three_quarter_box {
+  width:70%;
+  float:left;
+}
+
+
+.shape {
+  margin: 0;
+  margin-bottom: 15px;
+}
+
+.ui-button-text {
+  font-size: 0.8em !important
+}
+
+.slider {
+  margin: 0.1px auto;
+}
+
+.box .slider {
+  display: inline-block;
+  width: 5.5rem;
+  margin: 0;
+}
+
+
+select#clear_color {
+  width: 75%;
+}
+
+#age_series {
+  font-size: 30px;
+}
+
+/*.cfd_logo {
+  height: 150px;
+  background-color: white;
+  background-image:url('/img/airplane_logos.jpg');
+  background-repeat: no-repeat;
+  background-position: left top;
+}
+*/
+#webgl-error {
+  border: 4px solid red;
+  font-size: 1.5em;
+  text-align: center;
+  width: 20em;
+  padding: 1.5em;
+  margin: 5em auto;
+}
+
+#webgl-error a {
+  color: #FA5705;
+}
+
+div.file-select {
+  margin-bottom: 1.5em;
+  background-color: gray;
+  padding: 0.5em;
+  border-radius: 10px;
+
+}
+
+div.file-submit-div {
+  text-align: center;
+}
+
+#obj_file_submit {
+  margin-top: 0.7em;
+}
+
+input[type=file] {
+  margin-bottom: 0.4em;
+}
+
+select#obj_file_format {
+  width: 85%;
+}
+
+#spectrum {
+  margin-top: 1rem;
+}
+
+canvas#spectrum-canvas {
+  display: block;
+  margin-top: 1em;
+  margin-left: 0.5em;
+  width: 90%;
+}
+
+div#usage_notes {
+  padding: 0.3em;
+}
+
+div#format_hints {
+  padding-left: 4em;
+  padding-right: 2em;
+}
+
+.maintenance {
+  background-color: red;
+  color: white;
+  padding: 0.4em 1em;
+  line-height: 1.4;
+
+}
+
+#blend-box {
+  padding: 0.6em;
+}
+
+#vertex-data-wrapper {
+  position: absolute;
+  left: 5px;
+  right: 5px;
+  /*padding: 5px;*/
+  /*padding-right: 8px;*/
+  /*overflow-y: auto;*/
+  background-color: white;
+  border-radius: 10px;
+  display: none;
+  font-size: 14px;
+  top: 5px;
+  bottom: 5px;
+  padding-right: 8px;
+  overflow-y: auto;
+
+}
+
+#vertex-data {
+  background-color: gray;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  padding: 1em;
+  border-radius: 5px;
+  /*overflow-y: auto;*/
+}
+
+#vertex-data h3 {
+  font-size: 18px;
+  margin-top: 0;
+}
+
+.pick-data {
+  font-weight: normal;
+}
+
+#pick-color, #paint-color {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+}
+
+#intensity-data-export {
+  margin-bottom: 12px;
+}
+
+#atlas-label {
+  position: absolute;
+  left: 15px;
+  top: 145px;
+  display: none;
+}
+
+#annotation-wrapper {
+  margin-top: 12px;
+}
+
+#annotation-wrapper h4 {
+  margin-bottom: 2px;
+}
+
+#annotation-header {
+  margin-bottom: 10px;
+}
+
+#annotation-display {
+  background-color: #555555;
+  margin-top: 1em;
+  padding: 0.5em;
+}
+.upload-button {
+  color: #e9e9e9;
+  border: solid 1px #555;
+  background: #6e6e6e;
+  background: -webkit-gradient(linear, left top, left bottom, from(#888), to(#575757));
+  background: -moz-linear-gradient(top,  #888,  #575757);
+  filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#888888', endColorstr='#575757');
+}
+.upload-button:hover {
+  background: #616161;
+  background: -webkit-gradient(linear, left top, left bottom, from(#757575), to(#4b4b4b));
+  background: -moz-linear-gradient(top,  #757575,  #4b4b4b);
+  filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#757575', endColorstr='#4b4b4b');
+}
+.upload-button:active {
+  color: #afafaf;
+  background: -webkit-gradient(linear, left top, left bottom, from(#575757), to(#888));
+  background: -moz-linear-gradient(top,  #575757,  #888);
+  filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#575757', endColorstr='#888888');
+}
+.tag{
+  position: absolute;
+  background-color: MidnightBlue;
+  background-color:rgba(0,10,40);
+  border-top-left-radius: 10px;
+  border-bottom-right-radius:10px;
+  opacity: 0.8;
+  font-size: 8px;
+  font-weight: 5;
+  color: aqua;
+  width: 170px;
+  height: 90px;
+  padding: 1px 1px 1px;
+}

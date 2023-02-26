@@ -169,11 +169,11 @@
       */
       object.propagateEventTo = function(event_name, other) {
         if (!BrainBrowser.utils.isFunction(other.allPropagationTargets)) {
-          throw new Error("Propagation target doesn't seem to have an event model.");
+          console.log("Propagation target doesn't seem to have an event model.");
         }
 
         if (object === BrainBrowser.events || other.allPropagationTargets(event_name).indexOf(object) !== -1) {
-          throw new Error("Propagating event '" + event_name + "' would cause a cycle.");
+          console.log("Propagating event '" + event_name + "' would cause a cycle.");
         }
 
         propagated_events[event_name] = propagated_events[event_name] || [];

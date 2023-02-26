@@ -1,0 +1,286 @@
+/*
+* BrainBrowser: Web-based Neurological Visualization Tools
+* (https://brainbrowser.cbrain.mcgill.ca)
+*
+* Copyright (C) 2011 
+* The Royal Institution for the Advancement of Learning
+* McGill University
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as
+* published by the Free Software Foundation, either version 3 of the
+* License, or (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Affero General Public License for more details.
+*
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*
+*
+* Author: Tarek Sherif <tsherif@gmail.com> (http://tareksherif.ca/)
+* Author: Nicolas Kassis
+*/
+
+body {
+  background-color: #888888;
+  font-family : verdana; 
+}
+
+#brainbrowser-wrapper {
+  width: 60em;
+  margin: 50em auto;
+
+}
+
+#volume-container {
+  position: absolute;
+  background-color: #9b9b9b;
+  left: 2%;
+  padding-top: 30%;
+  height:85%;
+  width:39%;
+  margin-top:3%;
+  border:10px solid  #9b9b9b;
+  border-radius: 15px;
+  z-index: 10
+}
+
+.control-panel {
+  display: inline-block;
+  position:absolute;
+  padding:0% 0% 0% 0%;
+  background-color: #696969;
+  width:100%;
+  height:28%;
+  top:0%;
+  border:10px solid  #696969;
+  border-radius: 15px;
+}
+
+#volume-browser {
+  position:absolute;
+  background-color: rgba(1,1,1,0);
+  padding: 0.5em;
+  left:15%;
+  top:30%;
+  z-index: 15
+}
+
+.volume-container {
+  display: table-cell;
+  top:30%;
+}
+
+ 
+canvas#spectrum-canvas-vol {
+  display: block;
+  margin-top: 1em;
+  margin-left: 0.5em;
+  width: 90%;
+}
+canvas.slice-display {
+  display: block;
+  margin: 3px 5px;
+  color:rgba(1,1,1,0);
+}
+
+.volume-viewer-controls {
+  font-size: 0.7rem;
+  padding: 10px;
+  margin: 3px 5px;
+  background: #555555;
+  color: #F0F0F0;
+}
+
+.volume-viewer-controls > div {
+  margin-bottom: 10px;
+}
+
+
+.box {
+  border-radius: 10px;
+  background: #555555;
+  padding: 5px 5px;
+  margin: auto;
+  color: #F0f0f0;
+  z-index: 10
+
+}
+
+.control-inputs {
+  border: none;
+  padding: 2px;
+  margin-left: 10px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  -moz-box-shadow: 1px 1px 0px 0px #787878;
+  -webkit-box-shadow: 1px 1px 0px 0px #787878;
+  box-shadow: 1px 1px 0px 0px #787878;
+  width: 3em;
+  font-size: 0.8rem;
+}
+
+/*.coords .control-inputs {
+  margin-right: 0.6em;
+  width: 40px;
+  font-size: 10px;
+}*/
+
+.volume-viewer-threshold, .volume-viewer-blend {
+  width: 80%;
+  margin: auto;
+}
+
+.ui-slider .ui-slider-handle .ui-state-default .ui-corner-all {
+  color: #777777 !important;
+  font-size: 2rem;
+  padding: 3px;
+  text-shadow: 0 1px 0 #FFFFFF;
+  text-decoration:none;
+}
+
+
+
+.thresh-inputs {
+  position: relative;
+  height: 1em;
+}
+
+.thresh-input-left {
+  position: absolute;
+  left: 3px;
+}
+
+.thresh-input-right {
+  position: absolute;
+  right: 10px;
+}
+
+.slice-series-button {
+  font-size: 0.8rem;
+}
+
+#volume-file {
+  margin-top: 1px;
+  margin-bottom: 1px;
+  display: none;
+}
+
+#volume-file-submit {
+  margin-top: 6px;
+}
+
+#volume-file-hint {
+  margin: 4px;
+}
+
+#volume-file-hint a {
+  color: orange;
+}
+
+.intensity-value {
+  padding: 2px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+}
+* {
+   margin: 0;
+   padding: 0;
+}
+
+li {
+   list-style: none ;
+}
+a {
+   text-decoration: none;
+}
+.headerNav{
+  color:#524e4e;
+  position:absolute;
+  width:100%;
+  height:2rem;
+  top:0%;
+  background: #524e4e;
+
+}
+.controls{
+  color:#524e4e;
+  position:absolute;
+  width:100%;
+  top:0%;
+  height:100%;
+  font-size: 0.7rem;
+  z-index:10;
+}
+
+.controls li {
+/*    float: left;
+    margin: 0 0.1%;
+    padding-top:0px;*/
+/*    text-decoration:underline;*/
+/*    border-right: dashed  #ffffff 0.1px;
+*/
+}
+.controls a{
+/*    height: 33px;*/
+    padding-left: 1px;
+    color: #FFFFFF;
+    display: block;
+/*    line-height: 200%;*/
+/*    font-weight: 800;*/
+/*    font-size:19px;*/
+
+}
+
+.nav li {
+    float: right;
+    margin: 0 1%;
+    padding-top:0px;
+
+}
+.nav a{
+    height: 33px;
+    padding-left: 10px;
+    color: #FFFFFF;
+    display: block;
+    line-height: 200%;
+    font-weight: 800;
+    font-size:1rem
+}
+
+select{
+    background: rgba(0,0,0,0);
+    width: 3.5rem;
+    height: 1.2rem;
+    font-size: 0.7rem;
+    color: white;
+    text-align: center;
+    border: 1px #1a1a1a solid;
+    border-radius: 2px;
+}
+.range-box{
+    background: rgba(0,0,0,0);
+    width: 3em;
+    height: 1.2rem;
+    color: white;
+    text-align: center;
+    border: 1px #1a1a1a solid;
+    border-radius: 2px;
+}
+option{
+    color: black;
+    background: #A6E1EC;
+    line-height: 1.2em;
+}
+select:focus{
+    border: 2px #ddd solid;
+    box-shadow: 0 0 15px 1px #DDDDDD;
+}
+option:hover{
+    background: #EBCCD1;
+}
