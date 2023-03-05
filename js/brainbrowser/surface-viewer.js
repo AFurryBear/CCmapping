@@ -474,7 +474,7 @@
             url = "models/" + nameArr[1] + '/' + DataName;
           } else if (window.loading_con > 2) {
             let upload = $("[name=volume-file-type]:checked").val();
-            url = "models/" + upload + '/' + resultDir(DataName);
+            url = "save-file/" + upload + '/gifti1/' + resultDir(DataName);
           } else if (window.loading_con == 2) {
             url = "models/Group_result2/" + resultDir(DataName);
           }
